@@ -1,0 +1,225 @@
+==========================
+Rad sa podacima na serveru
+==========================
+
+
+Poziv *server* javascript metode
+================================
+
+Definišimo *delete_all* funkciju na serveru
+
+.. code-block:: py
+
+  def delete_all(item):
+      c = item.copy()
+      c.open()
+      c.first()
+      while not c.eof():
+          c.delete()
+      c.apply()
+
+Izvršimo je koristeći *server* methodu. Posle izvršenja pozivamo *open* metodu 
+da prikažemo promene.
+
+
+.. code-block:: py
+
+  task.catalog.server('delete_all', function() {
+      task.catalog.open(true)
+  })
+
+
+.. note::
+	Funkcije na serveru mogu biti izvršene u paralelnim nitima. Zbog toga uvek moramo 
+	kreirati kopije noda kada radimo sa serverskim datsetom.
+	
+
+Definišimo funkciju za dodavaje zapisa u tabelu baze podataka:
+
+
+.. code-block:: py
+
+  def add_records(item, count):
+      c = item.copy()
+      c.open()
+      for i in range(count):
+          c.append();
+          c.name.value = 'Record %s' % (i + 1)
+          c.value.value = i + 1;
+          c.post();
+      c.apply()
+
+  task.catalog.server('add_records', [100], function() {
+      task.catalog.open(true)
+  })
+
+
+Definišimo funkciju za promenu zapisa:
+
+.. code-block:: py
+
+  def change(item, delta):
+      copy = item.copy()
+      copy.open()
+      for c in copy:
+          c.edit()
+          c.value.value += delta;
+          c.post();
+      copy.apply()
+  
+  task.catalog.server('change', [1000], function() {
+      task.catalog.open(true)
+  })
+
+
+Metode za rad na sserveru su iste kao na klijentu. 
+
+Možete proslediti *options* rečnik *open* metodi na isti način kao na klijentu:
+
+
+.. code-block:: py
+
+  def list_records(item):
+      copy = item.copy()
+      copy.open({'fields': ['value', 'name'], 'where': {'value__ge': 1090}, 'order_by': ['-value']})
+      for c in copy:
+          print c.name.value, c.value.value
+  
+  task.catalog.server('list_records', true)
+
+
+Ili proslediti parametre kao ključne argumente:
+
+.. code-block:: py
+
+  def list_records(item):
+      copy = item.copy()
+      copy.open(fields=['value', 'name'], where={'value__ge': 1090}, order_by=['-value', 'name'])
+      for c in copy:
+          print c.name.value, c.value.value
+
+  task.catalog.server('list_records', true)
+
+
+Isto je za *set_where*, *set_fields*, *set_order_by* methode. Na prmer, resultat 
+izvršenja sledećih parova funkcija je isti:
+
+.. code-block:: py
+
+  item.set_where({'value__ge': 1090, 'date__gt': now})
+  item.set_where(value__ge=1090, date__gt=now)
+
+  copy.set_fields(['value', 'name'])
+  copy.set_fields('value', 'name')
+
+  copy.set_order_by(['-value', 'name'])
+  copy.set_order_by('-value', 'name')
+
+
+Poziv *execute* i *execute_select* metoda
+=========================================
+
+Drugi način rada sa podacima iz baze podataka je korišćenje *execute* i *execute_select*
+metoda taska. Ove metode koriste aplikacioni konekcioni pool. Koristićemo sa njiima
+*table_name* atribut noda.
+
+Koristite *execute_select* metodu za izvršavanje sql select upita. Ova metoda vraća 
+listu zapisa:
+
+
+.. code-block:: py
+
+  def pool_execute_select(item):
+      res = item.task.execute_select('select name, value from %s where deleted = 0' % item.table_name)
+      for r in res:
+          print r
+  
+  task.catalog.server('pool_execute_select', true)
+
+
+.. note::
+  Za *catalog* nod, vrednost 'Soft Delete' atributa je postavljen na *true*, 
+  što znači da *delete* metoda ne uklanja zapis iz tabele, već koristi deleted 
+  polje da označi zapis kao obrisan. *open* metoda noda uzima to u obzir, u
+  svim drugim slučajevima morate dodati uslov:	*deleted = 0*.
+
+
+.. code-block:: py
+
+  def pool_execute_select(item):
+      res = item.task.execute_select('select count(*) from %s where deleted = 0' % item.table_name)
+      print 'not deleted', res
+      res = item.task.execute_select('select count(*) from %s' % item.table_name)
+      print 'all', res
+
+
+Neka je *catalog* tabela prazna, dodajmo 10 zapisa korišćenjem *execute* metode taska
+
+
+.. code-block:: py
+
+  def pool_execute(item):
+      delete_sql = 'delete from %s' % item.table_name
+      add_sql = []
+      for i in range(10):
+          add_sql.append("insert into %s (value, name, deleted) values (%d, '%s', 0)" % 
+              (item.table_name, i + 1, 'Record %s' % (i + 1)))
+      item.task.execute([delete_sql] + add_sql)
+  
+  task.catalog.server('pool_execute', function() {
+      task.catalog.open(true)
+  })
+
+
+.. note::
+  Parametar execute metoda može biti query string, lista query stringova, lista 
+  listi itd. 
+  
+  Svi upiti su izvršeni u jednoj transakciji i ako je izvršenje uspešno *commit* 
+  komanda je pozvana, inače izvršava se *rollback* komanda.
+
+
+Poziv *create_connection* metode
+================================
+
+Treći način da čitate ili pišete u bazu podataka je kreiranje konekcije koristeći 
+*create_connection* metodu taska ili korišćenjem sqlite3 *connect* funkcije 
+(za *SQLITE* bazu podataka)
+
+
+.. code-block:: py
+
+  def use_connection(item):
+      con = item.task.create_connection()
+      cur = con.cursor()
+      cur.execute('delete from %s' % item.table_name)
+      for i in range(10):
+          cur.execute("insert into %s (value, name, deleted) values (%d, '%s', 0)" % 
+              (item.table_name, i + 1, 'Record %s' % (i + 1)))
+      con.commit()
+      con.close()
+  
+  task.catalog.server('use_connection', function() {
+      task.catalog.open(true)
+  })
+
+.. code-block:: py
+  
+  import sqlite3
+  def sqlite3_connection(item):
+      con = sqlite3.connect('ds.sqlite')
+      cur = con.cursor()
+      cur.execute('delete from %s' % item.table_name)
+      for i in range(20):
+          cur.execute("insert into %s (value, name, deleted) values (%d, '%s', 0)" % 
+              (item.table_name, i + 1, 'Record %s' % (i + 1)))
+      con.commit()
+      con.close()
+  
+  task.catalog.server('sqlite3_connection', function() {
+      task.catalog.open(true)
+  })
+
+
+.. note::
+   Ne zaboravite da zatvorite konekciju.

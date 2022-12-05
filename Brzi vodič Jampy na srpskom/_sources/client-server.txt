@@ -1,0 +1,154 @@
+
+============================
+Klijent - server interakcija
+============================
+
+Klijentska aplikacija šalje zahtev serveru svaki put kada je jedna od sledećih metoda 
+pozvana:
+  
+* *load*,
+* *open*,
+* *apply*,
+* *server*,
+* *total_records* metoda noda ili
+* *print* metoda report noda.
+
+*total_records* metodu poziva tabela za prikaz broja strana u paginatoru.
+
+Sve ove metode koriste *process_request* metodu taska da pošalju zahtev na server. 
+Možete postaviti breakpoint da proverite sve kljent-server interakcije. 
+
+
+*proces_request* metoda
+=======================
+
+*process_request* metoda šalje na server sledeće informacije:
+
+* *ime zahteva*
+* *ID taska*
+* *ID noda*, čiji je metod pozvan,
+* *parametre zahteva*
+
+.. note::
+  Svaki nod task stabla ima jedinstveni ID atribut.
+
+Server po prijemu zahteva, pronalazi odgovarajući task ( Project task ili 
+Administrator task), i nod na serveru, izvršava odgovarajuću metodu noda sa
+prosleđenim parametrima i vraća rezultat na klijent.
+
+Serverske metode mogu pokrenuti evente koji mogu modifikovati nihovo podrazumevano 
+ponašanje.
+
+Svaki nod taska stabla na serveru ima:
+
+* *environ* 
+* *session*
+
+atribute koji smeštaju kontekst tekućeg zahteva.
+
+
+*server* metoda noda na klijentu
+==================================
+
+Pogledajmo bliže *server* metodu noda na klijentu. Ona se može koristiti za izvršenje
+funkcije deklarisane u server modulu noda. Na primer, možemo izvršiti test funkciju
+deklarisanu u server modulu *catalog* noda:
+
+.. code-block:: py
+  
+  def test(item, a, b):
+    return a + b
+
+.. code-block:: js
+
+  task.catalog.server('test', [1,2], function(result, error) {
+    console.log(result, error)
+  })
+
+Izvršavajući server funkciju, prosleđujemo joj ime funkcije na serveru i listu
+parametara.
+
+.. note::
+	Prvi parametar funkcije na serveru mora biti objekat noda.
+
+Ako je callback funkcija definisana, server metoda se izvršava asinhrono, posle 
+toga callback se izvršava sa parametrima:
+
+* *result* serverske funkcije i 
+* *error text*, ako je izuzetak podignut za vreme izvršenja serverske funkcije.
+
+Inače, server metod se izvršava sinhrono i vraća rezultat izvršenja. Ako je izuzetak 
+podignut za vreme izvršenja, server metoda baca izuzetak.
+
+.. code-block:: py
+
+  def test(item, a, b):
+    raise Exception('Some error')
+    return a + b
+
+.. code-block:: js
+
+  task.catalog.server('test', [1,2], function(result, error) {
+    console.log(result, error)
+  })
+
+Unutar serverske funkcije možete pristuiti *environ* i *session* atributima i pozvati 
+*can_view*, *can_create*, *can_edit*, *can_delete* metode.
+
+.. code-block:: py
+  
+  def test(item, a, b):
+    print 'Session:', item.session
+    print 'Environment', item.environ
+    return a + b
+
+
+.. code-block:: js
+
+  task.catalog.server('test', [1,2], function(result, error) {
+    console.log(result, error)
+  })
+
+
+Postavimo *safe mode* i promenimo privilegije korisničke role:
+
+.. code-block:: py
+
+  def test(item, a, b):
+    print 'User_name', item.session['user_info']['user_name']
+    print 'Role_id', item.session['user_info']['role_id']
+    print 'Can view', item.can_view()
+    print 'Can create', item.can_create()
+    print 'Can edit', item.can_edit()
+    print 'Can delete', item.can_delete()
+    return a + b
+
+Možete koristiti *item.session['user_info']['role_id']* ili *can_view*, *can_create*, 
+*can_edit*, *can_delete* metode noda da ograničite korisnikova prava.
+
+
+.. code-block:: py
+
+  def test(item, a, b):
+    if item.session['user_info']['role_id'] == 2:
+        raise Exception('%s, you are not allowed to perform this operation' % \
+            item.session['user_info']['user_name'])
+    return a + b
+
+
+.. code-block:: js
+
+  task.catalog.server('test', [1,2], function(result, error) {
+    if (error) {
+      task.warning(error)
+    }
+    else {
+      console.log(result)
+    }
+  })
+
+
+Pored ovoga klijent server mehanizma razmene možete preuzimati fajlove sa serverskog 
+static direktorijuma, podizati fajlove na server, koristeći klijent task upload metodu,
+i procesirati post zahteve iz drugih aplikacija ili servisa, koristeći *on_ext_request*
+event handler server task objekta.

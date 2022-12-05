@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Početak &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Task stablo" href="task_tree.html" />
+    <link rel="prev" title="Pregled" href="overview.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="overview.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="task_tree.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="pocetak">
+<h1>Početak<a class="headerlink" href="#pocetak" title="Permalink to this heading">¶</a></h1>
+<section id="python-instalacija">
+<h2>Python instalacija<a class="headerlink" href="#python-instalacija" title="Permalink to this heading">¶</a></h2>
+<p>Jam.py zahteva python. Ako nije već instaliran, možete preuzeti poslednju verziju
+na <a class="reference external" href="https://www.python.org/downloads/">Python</a>. Nadalje podrazumevamo da radimo
+sa verzijom 3.7 Python interpretera.</p>
+<section id="virtuelni-enviroment">
+<h3>Virtuelni enviroment<a class="headerlink" href="#virtuelni-enviroment" title="Permalink to this heading">¶</a></h3>
+<p>U radnom direktorijumu treba da kreiramo virtuelni enviroment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; mkdir myenv</span>
+<span class="go">&gt; cd my myenv</span>
+<span class="go">&gt; py -3.7 -m venv .</span>
+</pre></div>
+</div>
+<p>Sada, aktiviramo virtuelni enviroment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; Scripts\activate.bat</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="jam-py-instalacija">
+<h2>Jam.py instalacija<a class="headerlink" href="#jam-py-instalacija" title="Permalink to this heading">¶</a></h2>
+<p>Sada, instaliramo Jam.py paket:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(myenv)</span> <span class="go">&gt; pip install jam.py</span>
+</pre></div>
+</div>
+</section>
+<section id="kreiranje-novog-jam-py-projekta">
+<h2>Kreiranje novog Jam.py projekta<a class="headerlink" href="#kreiranje-novog-jam-py-projekta" title="Permalink to this heading">¶</a></h2>
+<p>Želimo da kreiramo jednostavnu CRM aplikaciju.</p>
+<p>Prvo kreiramo direktorijum za novi projekat, i u tom direktorijumu pokrećemo
+<em>jam-project.py</em> skript da kreiramo projektnu strukturu:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(myenv)</span> <span class="go">&gt; mkdir crm</span>
+<span class="gp gp-VirtualEnv">(myenv)</span> <span class="go">&gt; cd crm</span>
+<span class="gp gp-VirtualEnv">(myenv)</span> <span class="go">&gt; python ..\jam\bin\jam-project.py</span>
+</pre></div>
+</div>
+<p>Potom pokrećemo <em>server.py</em> skript koji je kreirao <em>jam-project.py</em>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(myenv)</span> <span class="go">&gt; python server.py</span>
+</pre></div>
+</div>
+<p>Za kompletiranje kreiranja projekta u browser-u startujemo <em>AppBuilder</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">http://localhost:8080/builder.html</span>
+</pre></div>
+</div>
+<ul>
+<li><p>Prvo biramo <em>language</em> projekta,</p></li>
+<li><p>Posle toga pojaviće se dijalog <em>Projects parameters</em>. Sada podešavamo</p>
+<ul>
+<li><p><em>Caption</em> i</p></li>
+<li><p><em>Name</em> projekta.</p></li>
+<li><div class="line-block">
+<div class="line">Biramo <em>SQLITE</em> za bazu podataka.</div>
+<div class="line">Dajemo ime fajlu <em>crm.sqlite</em>.</div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+<p>Sada samo kompletirali kreiranje projekta.</p>
+</section>
+<section id="kucna-strana-aplikacije">
+<h2>Kućna strana aplikacije<a class="headerlink" href="#kucna-strana-aplikacije" title="Permalink to this heading">¶</a></h2>
+<p>Idemo na kućnu stranu aplikacije</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">http://localhost:8080/</span>
+</pre></div>
+</div>
+<p>i osvežimo je ( F5 ).</p>
+<p>Ovde je samo prazan meni.</p>
+</section>
+<section id="kreiranje-noda-u-grupi-catalogs">
+<h2>Kreiranje noda u grupi <em>Catalogs</em><a class="headerlink" href="#kreiranje-noda-u-grupi-catalogs" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Idemo nazad na stranu AppBuilder-a.</p></li>
+<li><p>Idemo u grupu <em>Catalogs</em> i kreiramo <em>Customers</em> nod.</p></li>
+<li><p>Podešavamo njegove atribute:</p>
+<ul class="simple">
+<li><p><em>Caption</em> - naslov koji vidi korisnik</p></li>
+<li><p><em>Name</em> - ime koje se koristi u kodu</p></li>
+<li><p><em>Database table name</em> - ime tabele u bazi podataka</p></li>
+</ul>
+</li>
+<li><p>I dodajemo tri polja tipa <em>text</em>:</p>
+<ul class="simple">
+<li><p><em>Firstname</em>,</p></li>
+<li><p><em>Lastname</em> i</p></li>
+<li><p><em>Phone</em>.</p></li>
+</ul>
+<p>Kao što vidite, kada sačuvamo <em>Customers</em> nod, server kreira odgovarajuću
+tabelu u projektnoj bazi podataka.</p>
+</li>
+<li><p>Idemo na kućnu stranu aplikacije i osvežimo je.</p></li>
+<li><p>Posle toga, na appbuilder strani, otvorimo <em>Customers</em> katalog ponovo i za polje
+Lastname podesimo:</p>
+<ul class="simple">
+<li><p><em>required</em> atribut,</p></li>
+<li><p><em>default</em> atribut</p></li>
+</ul>
+<p>Za nodove katalog grupe, čiji je <em>default</em> atibut podešen, podrazumevani kod
+kreira funkcionalnost pretrage.</p>
+</li>
+</ul>
+<section id="dodajmo-nekog-korisnika">
+<h3>Dodajmo nekog korisnika<a class="headerlink" href="#dodajmo-nekog-korisnika" title="Permalink to this heading">¶</a></h3>
+<p>John</p>
+<p>Gordon</p>
+<p>999-111-2222</p>
+</section>
+</section>
+<section id="kreiranje-noda-u-grupi-journals">
+<h2>Kreiranje noda u grupi <em>Journals</em><a class="headerlink" href="#kreiranje-noda-u-grupi-journals" title="Permalink to this heading">¶</a></h2>
+<p>Sada kreirajmo u grupi <em>Journals</em> <em>Contacts</em> nod, i njegova polja:</p>
+<ul class="simple">
+<li><p>Date, polje tip <em>datetime</em>,</p></li>
+<li><p>Customer, polje tip <em>lookup</em>, koje će sadržati referencu na zapis u <em>Customers</em> tabeli,</p></li>
+<li><p>Firstname i Phone, polja tip <em>lookup</em>, ali za ova polja podešavamo polje Customer
+kao <em>master_field</em> atribut. U ovom slučaju Jam.py neće kreirati polja u <em>Contacts</em> tabeli.</p></li>
+<li><p>Notes, polje tipa <em>text</em>, <em>lenght</em> = 100</p></li>
+<li><p>Otvorimo <em>Contacts</em> nod na kućnoj strani aplikacije.</p></li>
+</ul>
+<section id="kreiranje-lookup-liste">
+<h3>Kreiranje <em>lookup liste</em><a class="headerlink" href="#kreiranje-lookup-liste" title="Permalink to this heading">¶</a></h3>
+<p>Radi lakšeg rada, duplirajmo AppBuilder stranu, izaberimo Task i kreirajmo <em>lookup listu</em>
+sa nazivom <em>Status</em>, sa sledećim parovima:</p>
+<ul class="simple">
+<li><p>1: Contact</p></li>
+<li><p>2: Meeting</p></li>
+<li><p>3: Proposal</p></li>
+<li><p>4: Close</p></li>
+</ul>
+</section>
+<section id="kreiranje-noda-u-grupi-journals-nastavak">
+<h3>Kreiranje noda u grupi <em>Journals</em> - nastavak<a class="headerlink" href="#kreiranje-noda-u-grupi-journals-nastavak" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Otvorimo <em>Contacts</em> nod ponovo i dodajmo polje tipa <em>lookup</em> Status podešavanjem
+njegove lookup liste.</p></li>
+<li><p>Podesimo atribute polja <em>Customer</em>:</p>
+<ul>
+<li><p><em>Required</em></p></li>
+<li><p><em>Typeahead</em></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="dodajmo-malo-koda">
+<h3>Dodajmo malo koda<a class="headerlink" href="#dodajmo-malo-koda" title="Permalink to this heading">¶</a></h3>
+<p>Napišimo <em>on_after_append</em> event hendler, koji će biti pokrenut kada je novi zapis
+dodat u <em>Contacts</em> journal.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_after_append</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">item</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="nx">item</span><span class="p">.</span><span class="nx">status</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>i podesimo:</p>
+<ul class="simple">
+<li><p>Polje Date na tekući datum i</p></li>
+<li><p>Polje Status na <em>Contact</em> lookup vrednost.</p></li>
+</ul>
+<p>Napišimo <em>on_field_get_text</em> event hendler</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_field_get_text</span><span class="p">(</span><span class="nx">field</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;customer&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">firstname</span><span class="p">.</span><span class="nx">lookup_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">lookup_value</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>koji će prikazati u polju Customer korisničko firstname i lastname.</p>
+</section>
+<section id="podesavanje-view-i-edit-forme">
+<h3>Podešavanje <em>view</em> i <em>edit</em> forme<a class="headerlink" href="#podesavanje-view-i-edit-forme" title="Permalink to this heading">¶</a></h3>
+<p>Sada promenimo redosled prikaza polja kada pregledamo journal, i kada ga editujemo.
+To radimo u AppBuilder-u klikom na <em>View form</em> i <em>Edit form</em> dugmad.</p>
+<p>Hajde da promeimo podrazumevani kod. Obrišimo dinamički meni, kreiran u <em>on_page_loaded</em>
+event hendleru i umesto toga otvorimo <em>view</em> formu <em>Contacts</em> journal-a.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">view</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Za <em>Journals</em> podrazumevani kod dozvoljava korišćenje filtera. Kreirajmo filtere
+za polja journala-a.</p>
+<p>Za demonstraciju filtera dodajmo još jednog korisnika:</p>
+<p>Kathy</p>
+<p>Chase</p>
+<p>111-22-3333</p>
+</section>
+</section>
+<section id="demonstracija-rada-sa-html-sablonima">
+<h2>Demonstracija rada sa html šablonima<a class="headerlink" href="#demonstracija-rada-sa-html-sablonima" title="Permalink to this heading">¶</a></h2>
+<p>Podrazumevano, html šablon sa klasom <em>default-view</em> se koristi za kreiranje <em>view</em>
+forme za sve journale i catalog-e, za koje njihov sopstveni <em>view</em> šablon nije
+definisan.</p>
+<p>Hajde da kreiramo jedan <em>view</em> šablon forme za <em>Contacts</em> journal, kopiranjem
+postojećeg <em>default-view</em> šablona. Definišimo njegovu klasu sa <em>contacts-view</em>.
+Dodajmo <em>Customers</em> button.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;contacts-view&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-body&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;view-table&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;view-detail&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-footer&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;delete-btn&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn expanded-btn pull-left&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;icon-trash&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span> Delete<span class="p">&lt;</span><span class="nt">small</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;muted&quot;</span><span class="p">&gt;</span><span class="ni">&amp;nbsp;</span>[Ctrl+Del]<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;report-btn&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn-group dropup&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn expanded-btn dropdown-toggle&quot;</span> <span class="na">data-toggle</span><span class="o">=</span><span class="s">&quot;dropdown&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;icon-print&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span> Reports
+                <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;caret&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;dropdown-menu bottom-up&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;customers-btn&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn expanded-btn&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span><span class="p">&gt;</span>
+            Customers
+        <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;edit-btn&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn expanded-btn&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;icon-edit&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span> Edit
+        <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;new-btn&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn expanded-btn&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;icon-plus&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span> New <span class="p">&lt;</span><span class="nt">small</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;muted&quot;</span><span class="p">&gt;</span><span class="ni">&amp;nbsp;</span>[Ctrl+Ins]<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Sada napišimo event hendler za <em>on_view_form_created</em> event.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_view_form_created</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">item</span><span class="p">.</span><span class="nx">view_form</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;#customers-btn&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">view</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Dakle, klik na <em>Customers</em> dugme će otvoriti <em>view</em> formu za <em>Customers</em> item.</p>
+<p>Možemo definisati poredak prikaza <em>Contact</em> journal zapisa i kreirati odgovarajući
+indeks za bazu podataka.</p>
+<p>Sada možemo otvoriti <em>project.css</em> fajl i promeniti izgled aplikacije korišćenjem css-a.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nx">dbtable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">border</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="nx">px</span><span class="w"> </span><span class="nx">solid</span><span class="w"> </span><span class="nx">blue</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="nx">border</span><span class="o">-</span><span class="nx">radius</span><span class="o">:</span><span class="w"> </span><span class="mf">6</span><span class="nx">px</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">.</span><span class="nx">dbtable</span><span class="w"> </span><span class="nx">td</span><span class="p">.</span><span class="nx">customers</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="nx">black</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="nx">font</span><span class="o">-</span><span class="nx">weight</span><span class="o">:</span><span class="w"> </span><span class="nx">bold</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Početak</a><ul>
+<li><a class="reference internal" href="#python-instalacija">Python instalacija</a><ul>
+<li><a class="reference internal" href="#virtuelni-enviroment">Virtuelni enviroment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jam-py-instalacija">Jam.py instalacija</a></li>
+<li><a class="reference internal" href="#kreiranje-novog-jam-py-projekta">Kreiranje novog Jam.py projekta</a></li>
+<li><a class="reference internal" href="#kucna-strana-aplikacije">Kućna strana aplikacije</a></li>
+<li><a class="reference internal" href="#kreiranje-noda-u-grupi-catalogs">Kreiranje noda u grupi <em>Catalogs</em></a><ul>
+<li><a class="reference internal" href="#dodajmo-nekog-korisnika">Dodajmo nekog korisnika</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#kreiranje-noda-u-grupi-journals">Kreiranje noda u grupi <em>Journals</em></a><ul>
+<li><a class="reference internal" href="#kreiranje-lookup-liste">Kreiranje <em>lookup liste</em></a></li>
+<li><a class="reference internal" href="#kreiranje-noda-u-grupi-journals-nastavak">Kreiranje noda u grupi <em>Journals</em> - nastavak</a></li>
+<li><a class="reference internal" href="#dodajmo-malo-koda">Dodajmo malo koda</a></li>
+<li><a class="reference internal" href="#podesavanje-view-i-edit-forme">Podešavanje <em>view</em> i <em>edit</em> forme</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#demonstracija-rada-sa-html-sablonima">Demonstracija rada sa html šablonima</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="overview.html"
+                          title="previous chapter">Pregled</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="task_tree.html"
+                          title="next chapter">Task stablo</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/getting_started.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

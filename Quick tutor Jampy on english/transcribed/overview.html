@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>The overview &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The getting started" href="getting_started.html" />
+    <link rel="prev" title="The transcript from video tutorials" href="index.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="../contents.html">Table of contents</a>
+                    </li>
+                    
+                    <li>
+                        <a href="index.html">Prev</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="getting_started.html">Next</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <h4 class="doc-title text-center"><a href="http://jam-py.com/docs/">Jam.py documentation</a></h4>
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <div class="section" id="the-overview">
+<h1>The overview<a class="headerlink" href="#the-overview" title="Permalink to this headline">¶</a></h1>
+<p>The Jam.py framework is an open source, event driven framework for developing
+web database applications.</p>
+<p>It uses:</p>
+<ul class="simple">
+<li><p><em>Python</em> and <em>Werkzeug</em> network library on the server side,</p></li>
+<li><p><em>Javascript</em>, <em>JQuery</em> and <em>Bootstrap</em> on the client side,</p></li>
+<li><p><em>Application Builder</em> for graphical development on the server and client side,</p></li>
+<li><p>a dozen predefined css themes,</p></li>
+<li><p><em>SQLite</em>, <em>MySQL</em>, <em>PostgrSQL</em>, <em>Firebird</em>, <em>MS SQL Server</em> and <em>Oracle</em> databases,
+for work in a new or existing database schema,</p></li>
+<li><p>LibreOffice templates for create reports, in the pdf, excel or csv formats,</p></li>
+<li><p>data-aware controls.</p></li>
+</ul>
+<p>We can create:</p>
+<ul class="simple">
+<li><p>dashboards as well as big applications with complex business logic,</p></li>
+<li><p>filters for filtering data by one or more selected conditions,</p></li>
+<li><p>serch criteria for data by selected conditions,</p></li>
+<li><p>user actions associated with predefined javascript buttons,</p></li>
+<li><p>cascade-linked combo-boxes with incremental search capabilities,</p></li>
+<li><p>pages for the authentication and authorization actions,</p></li>
+<li><p>help systems associated with any of controls in a from,</p></li>
+<li><p>applications, with foreign python and javascript libraries.</p></li>
+</ul>
+<div class="section" id="jam-py-has-powerful-library">
+<h2>Jam.py has powerful library<a class="headerlink" href="#jam-py-has-powerful-library" title="Permalink to this headline">¶</a></h2>
+<p>Suppose we created a <em>customers</em> item in The Application Builder.</p>
+<p>Now we can:</p>
+<ul>
+<li><p>Create a <em>modal</em> customers form:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">view</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Or, <em>modeles</em></p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">view</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This code we can get run in the web js of our browsers.</p>
+</div>
+</li>
+<li><p>Turn on selection checkboxes:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">selections</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>After changing their value in the customer form, we check their values</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">selections</span>
+</pre></div>
+</div>
+<p>Turn off it:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">selections</span> <span class="o">=</span> <span class="kc">undefined</span>
+</pre></div>
+</div>
+</li>
+<li><p>Play with our dataset records:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Go to the next record in the current dataset</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span>
+
+<span class="c1">// Get value of the lastname field of the current dataset record</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">lastname</span><span class="p">.</span><span class="nx">value</span>
+
+<span class="c1">// Get edit form for the current dataset record</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">create_edit_form</span><span class="p">()</span>
+
+<span class="c1">// Go to the next record in the dataset</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span>
+
+<span class="c1">// Let we insert a blanc record in the dataset,</span>
+<span class="c1">// and get edit form for the current dataset record</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">insert_record</span><span class="p">()</span>
+
+<span class="c1">// Let we set value of the lastname field of the current dataset record</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">lastname</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s1">&#39;Yushev&#39;</span>
+
+<span class="c1">// Let we save value of the current record in the database</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">apply_record</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="event-driven-jam-py-nature">
+<h2>Event-driven Jam.py nature<a class="headerlink" href="#event-driven-jam-py-nature" title="Permalink to this headline">¶</a></h2>
+<p>Let we write a on_after_insert event handler of the item, with the unitprice field:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">item</span><span class="p">.</span><span class="nx">unitprice</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>From now on, each newly added record will have value of the unitprice field equally 1.0.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The on_after_insert is right place for set up default value for any of user item defined fields.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>The Jam.py is an <em>‘All in the browser’</em> framework. Complete development of the application
+is possible within a browser.</p>
+<p>It developed and put to use under the terms of a modified
+BSD license, by Andrew Yushev, from Tula, Russia.</p>
+<p>See all this and many other on <a class="reference external" href="http://jam-py.com/">http://jam-py.com/</a></p>
+</div>
+</div>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../contents.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The overview</a><ul>
+<li><a class="reference internal" href="#jam-py-has-powerful-library">Jam.py has powerful library</a></li>
+<li><a class="reference internal" href="#event-driven-jam-py-nature">Event-driven Jam.py nature</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">The transcript from video tutorials</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="getting_started.html"
+                        title="next chapter">The getting started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/transcribed/overview.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Copyright &copy; <a href="http://yushev.ru/en/index.html">Andrew Yushev</a> 2015-2018
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

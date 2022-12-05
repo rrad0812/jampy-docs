@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Forms &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Form events" href="form_events.html" />
+    <link rel="prev" title="The task tree" href="task_tree.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="../contents.html">Table of contents</a>
+                    </li>
+                    
+                    <li>
+                        <a href="task_tree.html">Prev</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="form_events.html">Next</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <h4 class="doc-title text-center"><a href="http://jam-py.com/docs/">Jam.py documentation</a></h4>
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <div class="section" id="forms">
+<h1>Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h1>
+<p>There are four types of forms: <em>view forms</em>, <em>edit forms</em>, <em>filter forms</em>,
+<em>param forms</em>.</p>
+<p>These item attributes are JQuery objects:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">view_form</span>
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_form</span>
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">filter_form</span>
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">purchases_report</span><span class="p">.</span><span class="nx">param_form</span>
+</pre></div>
+</div>
+<p>You can use JQuery to access any JQuery object in the form</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="c1">// Find and hide new button on the invoices view form</span>
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">view_form</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;#new-btn&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="c1">// Find ok button on the invoices edit form</span>
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_form</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;#ok-btn&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="c1">// Find taxrate input line  and change color attribute</span>
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit$</span><span class="p">(</span><span class="s1">&#39;input.taxrate&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="c1">// Find tax input line and change color attribute</span>
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_form</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.dbtable td.tax&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can assign jQuery events to buttons or other form elements.
+This is usually done in form events.</p>
+<div class="section" id="jam-py-templates">
+<h2>Jam.py templates<a class="headerlink" href="#jam-py-templates" title="Permalink to this headline">¶</a></h2>
+<p>Jam.py forms are based on html templates. These templates are defined in the index.html
+file, in the div with the class “templates”. When task is loaded it cuts out this div
+and stores it as templates attribute task.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">templates</span>
+</pre></div>
+</div>
+<p>Forms are created using the create_type_form methods, where type is the type of
+the form. These methods are used internally by the following methods: <em>view</em>,
+<em>insert_record</em>, <em>append_record</em>, <em>edit_record</em>.</p>
+<p>The application reads the form template from the templates attribute of the task and,
+if the container parameter is passed, inserts it into the container, otherwise a modal
+form is created and the template is inserted into it.</p>
+<p>The application first looks for a template with a formname-type class, where formname
+is the item_name attribute of the form, and type is the form type.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Form example: customers-view</p>
+</div>
+<p>If the template is not found, it looks for the owner template, and after that the default
+template.</p>
+<p>Items have type_options attributes, where type is a form type that specifies the attributes
+of the form to create. For more information on form options, see the documentation.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">view_options</span>
+<span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Invoices&quot;</span><span class="p">,</span> <span class="nx">fields</span><span class="o">:</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span> <span class="nx">form_header</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">form_border</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">close_button</span><span class="o">:</span> <span class="kc">true</span><span class="p">,...}</span>
+
+<span class="o">&gt;</span> <span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_options</span>
+<span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Invoices&quot;</span><span class="p">,</span> <span class="nx">fields</span><span class="o">:</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nx">form_header</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">form_border</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">close_button</span><span class="o">:</span> <span class="kc">true</span><span class="p">,...}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../contents.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Forms</a><ul>
+<li><a class="reference internal" href="#jam-py-templates">Jam.py templates</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="task_tree.html"
+                        title="previous chapter">The task tree</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="form_events.html"
+                        title="next chapter">Form events</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/transcribed/forms.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Copyright &copy; <a href="http://yushev.ru/en/index.html">Andrew Yushev</a> 2015-2018
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

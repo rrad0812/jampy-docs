@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Asinhroni i sinhroni pozivi &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Rad sa podacima na serveru" href="datasets3.html" />
+    <link rel="prev" title="Dataset" href="datasets.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="datasets.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="datasets3.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="asinhroni-i-sinhroni-pozivi">
+<h1>Asinhroni i sinhroni pozivi<a class="headerlink" href="#asinhroni-i-sinhroni-pozivi" title="Permalink to this heading">¶</a></h1>
+<p>Kreirajmo kopiju noda <em>catalog</em> i napravimo tabelu za prikazivanje
+podataka.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">copy</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="mf">820</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p><em>open</em> i <em>apply</em> metode mogu imati <em>callback</em> i <em>async</em> parametre. Ako je <em>callback</em>
+funkcija prosleđena kao parametar ili je async parametar <em>true</em>, zahtev se
+izvršava asinhrono.</p>
+<p>Pošto je dataset primljen, izvršava se <em>callback</em> funkcija ako je definisana.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Asinhroni poziv open metod sa definisanim callback parametrom</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">record_count</span><span class="p">())</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+
+<span class="c1">// Asinhroni poziv open funkcije sa parametrom true</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+
+<span class="c1">// Sinhroni poziv open metotde</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="open-metoda">
+<h2><em>open</em> metoda<a class="headerlink" href="#open-metoda" title="Permalink to this heading">¶</a></h2>
+<p>Može imati sledeće parametre:</p>
+<ul class="simple">
+<li><p><em>options</em>,</p></li>
+<li><p><em>callback</em>,</p></li>
+<li><p><em>async</em>.</p></li>
+</ul>
+<p><em>Options</em> parametar je objekat koji može imati sledeće atribute:</p>
+<ul class="simple">
+<li><p><em>expanded</em>,</p></li>
+<li><p><em>fields</em>,</p></li>
+<li><p><em>where</em>,</p></li>
+<li><p><em>order_by</em>,</p></li>
+<li><p><em>open_empty</em>,</p></li>
+<li><p><em>funcs</em>,</p></li>
+<li><p><em>group_by</em>,</p></li>
+<li><p><em>limit</em>,</p></li>
+<li><p><em>offset</em>.</p></li>
+</ul>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">value__range</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">20</span><span class="p">]},</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fields</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;value&#39;</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="nx">order_by</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="nx">callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">item</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="s1">&#39;Total records: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">item</span><span class="p">.</span><span class="nx">record_count</span><span class="p">())</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="nx">callback</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Poredak parametara nije bitan. Neki parametri mogu biti izostavljeni!
+Evo demonstracije <em>func</em> parametra:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">value__range</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">20</span><span class="p">]},</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fields</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nx">funcs</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;sum&#39;</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="kc">true</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="pomocne-metode">
+<h3>Pomoćne metode<a class="headerlink" href="#pomocne-metode" title="Permalink to this heading">¶</a></h3>
+<p>Pogledajmo pomoćne metode:</p>
+<ul class="simple">
+<li><p><em>set_where</em>,</p></li>
+<li><p><em>set_fields</em>,</p></li>
+<li><p><em>set_order_by</em>.</p></li>
+</ul>
+<p>Pozivanje ovih metoda pre poziva <em>open</em> metode je slično specificiranju odgovarajućeg
+parametra:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">({</span><span class="w"></span>
+<span class="w">    </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">value__range</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">20</span><span class="p">]},</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fields</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;value&#39;</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="nx">order_by</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nx">callback</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Ovo je isto kao:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">(</span><span class="w"> </span><span class="p">{</span><span class="nx">value__range</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">20</span><span class="p">]}</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">set_fields</span><span class="p">(</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">set_order_by</span><span class="p">(</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Posle poziva <em>open</em> metoda, uticaj ovih metoda prestaje.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Poziv open metoda će vratiti kompletan dataset,</span><span class="w"></span>
+<span class="c1">// bez uticaja prethodno pozvanih pomoćnih metoda</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Takođe, pomoćne metode se mogu koristiti u nekim specifičnim situacijama,na primer
+za postavljanje uslova filteriranja pre poziva view metode, koja poziva <em>open</em>
+metod u <em>on_view_form_created</em> event hendleru.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">set_where</span><span class="p">(</span><span class="w"> </span><span class="p">{</span><span class="nx">value__range</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">60</span><span class="p">]}</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">view</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="filtriranje-zapisa">
+<h2>Filtriranje zapisa<a class="headerlink" href="#filtriranje-zapisa" title="Permalink to this heading">¶</a></h2>
+<p>Postoje tri načina da se definiše koji zapisi u datasetu noda će biti preuzeti iz
+tabele baze odataka:</p>
+<ol class="arabic simple">
+<li><p>Poziv <em>open</em> metode sa specificiranim <em>where</em> parametrom,</p></li>
+<li><p>Poziv <em>set_where</em> metode, pre poziva <em>open</em> metode,</p></li>
+<li><p>Korišćenje filtera.</p></li>
+</ol>
+<p>Kreirajmo <em>value_ge</em> filter za vrednost polja, sa tipom filtera GE (greater than
+or equal to). Neka je njegova vrednost 50.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">filters</span><span class="p">.</span><span class="nx">value_ge</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">50</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Filtriranje je izvršeno kao što sledi:</p>
+<ul>
+<li><p>Kada je <em>where</em> parametar specificiran, on se uvek koristi, čak iako je <em>set_where</em>
+metoda bila pozvana ili nod ima podešene filtere.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">({</span><span class="nx">value__ge</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">({</span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">value__ge</span><span class="o">:</span><span class="w"> </span><span class="mf">90</span><span class="p">}},</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Kada je <em>where</em> parametar izostavljen parametr prosleđen u <em>set_where</em> metodi
+se koristi.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">({</span><span class="nx">value__ge</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Kada je <em>where</em> parametar izostavljen i <em>set_where</em> metoda nije pozvana, filteri
+se koriste.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Za onemogućavanje filtera postavite njegovu vrednost na null.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">filters</span><span class="p">.</span><span class="nx">value_ge</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p><em>where</em> parametar open metode je rečnik, čiji su ključevi imena polja, koje slede
+posle duple podcrte filterski simboli.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">Za EQ (equal) filter filterski simbol <em>__eq</em> može biti izostaljen.</div>
+<div class="line">Na primer {id: 100} je ekvivalentno sa {id__eq: 100}.</div>
+</div>
+</div>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Asinhroni i sinhroni pozivi</a><ul>
+<li><a class="reference internal" href="#open-metoda"><em>open</em> metoda</a><ul>
+<li><a class="reference internal" href="#pomocne-metode">Pomoćne metode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#filtriranje-zapisa">Filtriranje zapisa</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="datasets.html"
+                          title="previous chapter">Dataset</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="datasets3.html"
+                          title="next chapter">Rad sa podacima na serveru</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/datasets2.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

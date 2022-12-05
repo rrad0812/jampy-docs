@@ -1,0 +1,18 @@
+Brzi uvod u Jam.py
+==================
+
+Ideja je da se Jam.py okvir predstavi na što je moguće lakši i brži način, a da 
+se pri tome ne dovede u pitanje nijedna od njegovih osobina.
+
+.. toctree::
+   :maxdepth: 1
+
+   overview
+   getting_started
+   task_tree
+   forms
+   datasets
+   datasets2
+   datasets3
+   fields_filters
+   client-server

@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Forme &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dataset" href="datasets.html" />
+    <link rel="prev" title="Task stablo" href="task_tree.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="task_tree.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="datasets.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="forme">
+<h1>Forme<a class="headerlink" href="#forme" title="Permalink to this heading">¶</a></h1>
+<p>Postoje četiri tipa formi:</p>
+<ul class="simple">
+<li><p><em>view</em> forme,</p></li>
+<li><p><em>edit</em> forme,</p></li>
+<li><p><em>filter</em> forme,</p></li>
+<li><p><em>param</em> forme.</p></li>
+</ul>
+<p>Ovi atributi noda su JQuery objekti:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">view_form</span><span class="w"></span>
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_form</span><span class="w"></span>
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">filter_form</span><span class="w"></span>
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">purchases_report</span><span class="p">.</span><span class="nx">param_form</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Možete koristiti JQuery da pristupite bilo kom JQuery objektu u formi</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="c1">// Pronađi i sakrij new dugme na invoices view formi</span><span class="w"></span>
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">view_form</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;#new-btn&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">()</span><span class="w"></span>
+
+<span class="o">&gt;</span><span class="w"> </span><span class="c1">// Nađi ok dugme na invoices edit formi</span><span class="w"></span>
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_form</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;#ok-btn&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="o">&gt;</span><span class="w"> </span><span class="c1">// Nađi taxrate input liniju i promeni boju</span><span class="w"></span>
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit$</span><span class="p">(</span><span class="s1">&#39;input.taxrate&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;red&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="o">&gt;</span><span class="w"> </span><span class="c1">// Pronađi tax input liniju i promeni boju</span><span class="w"></span>
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_form</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.dbtable td.tax&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;red&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Možete pridružiti jQuery evente dugmadima ili drugim elemntima forme.
+To se obično radi u form eventima.</p>
+<section id="jam-py-sabloni">
+<h2>Jam.py šabloni<a class="headerlink" href="#jam-py-sabloni" title="Permalink to this heading">¶</a></h2>
+<p>Jam.py forme su zasnovane na html šablonima. Ovi šabloni su definisani u <em>index.html</em>
+fajlu, u div-u sa klasom “templates”. Kada je task učitan on odseca ovaj div i
+smešta ga u <em>templates</em> atribut task objekta.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">templates</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Forme su kreirane korišćenjem <em>create_type_form</em> metode, gde je <em>type</em> tip forme.
+Ove metode se koriste interno od strane: <em>view</em>, <em>insert_record</em>, <em>append_record</em>,
+<em>edit_record</em> metoda.</p>
+<p>Aplikacija čita šablone formi iz <em>templates</em> atributa task objekta, i ako je
+<em>container</em> parametar prosleđen, insertuje šablon u kontejner, inače modalna forma
+je kreirana i šablon je insertovan u nju.</p>
+<p>Aplikacija prvo traži šablon sa <em>formname-type</em> klasom, gde <em>formname</em> je <em>item_name</em>
+atribut forme, i <em>type</em> je tip forme.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Primer klase forminog šablona: <em>customers-view</em></p>
+</div>
+<p>Ako šablon nije nađen, aplikacija traži vlasnikov šablon, i na kraju default šablon.</p>
+<p>Nodovi imaju <em>type_options</em> atribute, gde je <em>type</em> tip forme, koji specificiraju
+atribute forme za kreiranje.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">view_options</span><span class="w"></span>
+<span class="p">{</span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Invoices&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">fields</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="p">(</span><span class="mf">9</span><span class="p">),</span><span class="w"> </span><span class="nx">form_header</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">form_border</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">close_button</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,...}</span><span class="w"></span>
+
+<span class="o">&gt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">invoices</span><span class="p">.</span><span class="nx">edit_options</span><span class="w"></span>
+<span class="p">{</span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Invoices&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">fields</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="p">(</span><span class="mf">0</span><span class="p">),</span><span class="w"> </span><span class="nx">form_header</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">form_border</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">close_button</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,...}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="eventi-forme">
+<h2>Eventi forme<a class="headerlink" href="#eventi-forme" title="Permalink to this heading">¶</a></h2>
+<p>Prvi event pokrenut na klijentu pošto je task učitan, je <em>on_page_loaded</em> event.
+U Demo aplikaciji ovaj event se koristi za kreiranje dinamičkog menija, baziranog
+na task stablu. Za svaki vidljiv nod, klik na meni će pokrenuti JQuery event
+za <em>view</em> ili <em>print</em> nodove.</p>
+<p>Radi praćenja izvršavanja, postavili smo prekidnu tačku u izvorni kod klijent
+modula, u <em>on_view_form_created</em> event hendler <em>Customers</em> noda. <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<img alt="The on_view_form_created event handler of the Customer item on the breakpoint" class="align-center" src="_images/on_view_form_created.png" />
+<p>Da bi razumeli poredak eventa <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, pogledajmo na stek funkcijskih poziva:</p>
+<img alt="The call stack on the breakpoint" class="align-center" src="_images/call_stack.png" />
+<p>Očigledno <em>on_view_form_created</em> event hendler je pozvan od <em>_process_event</em>
+funkcije. Ova funkcija poziva tri <em>on_view_form_created</em> event hendlera:</p>
+<ul class="simple">
+<li><p>Jedan za task objekat, ako je definisan u task klijent modulu,</p></li>
+<li><p>Drugi za objekat vlasnika noda, ako je definisan u klijent modulu grupe,</p></li>
+<li><p>i na kraju za nod, ako je definisana u klijent modulu noda,</p></li>
+</ul>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Part of the _process_event function code</span><span class="w"></span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">task</span><span class="p">[</span><span class="nx">event</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">task</span><span class="p">[</span><span class="nx">event</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">master</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">owner</span><span class="p">[</span><span class="nx">event</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">owner</span><span class="p">[</span><span class="nx">event</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">event</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">[</span><span class="nx">event</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>prateći strukturu task stabla.</p>
+<p>Dakle možete smestiti vaš kod u</p>
+<ul class="simple">
+<li><p><em>task klijent modul</em>, i on će se primeniti na sve module, kao što autor Jam.py radi,</p></li>
+<li><p><em>klijent modul grupe</em>, tako da se kod primeni na sve nodove grupe,</p></li>
+<li><p><em>klijent modul noda</em>, i on će biti primenjen samo za dati nod.</p></li>
+</ul>
+<p>Na taj način, eventi su generisani za date tipove formi, sa izuzetkom <em>close_query</em>
+eventa, koji su pokrenuti u obrnutom redosledu.</p>
+</section>
+<section id="kontrole-svesne-podataka">
+<h2>Kontrole svesne podataka<a class="headerlink" href="#kontrole-svesne-podataka" title="Permalink to this heading">¶</a></h2>
+<section id="kreiranje-tabelarnog-prikaza-podataka">
+<h3>Kreiranje tabelarnog prikaza podataka<a class="headerlink" href="#kreiranje-tabelarnog-prikaza-podataka" title="Permalink to this heading">¶</a></h3>
+<p>Očistimo div sa id = ‘content’ i dodajmo mu div sa id = ‘table’.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">).</span><span class="nx">empty</span><span class="p">()</span><span class="w"></span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div id=&#39;table&#39;&gt;&quot;</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Kreirajmo kopiju <em>Customers</em> noda, pozovimo <em>create_table</em> metodu i popunimo sa
+podacima, pozivajući <em>open</em> metodu.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">copy</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="paginacija">
+<h3>Paginacija<a class="headerlink" href="#paginacija" title="Permalink to this heading">¶</a></h3>
+<p>Zatvorimo kopiju <em>Customer</em> noda i postavimo atribut <em>paginate</em> na <em>true</em>.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">close</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">paginate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Kada je ovaj atribut postavljen, <em>create_table</em> metoda izračunava broj vrsta za
+datu visinu tabele (podrzumevano: 480 pixels) i kreira kontrolu paginacije.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<p><em>open</em> metoda vraća sa servera broj zapisa izračunat gornjom funkcijom:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Sada tabela učitava zapise sa servera po potrebi.</p>
+</section>
+<section id="filtriranje-podataka">
+<h3>Filtriranje podataka<a class="headerlink" href="#filtriranje-podataka" title="Permalink to this heading">¶</a></h3>
+<p>Prikažimo zapise korisnika iz Nemačke:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">({</span><span class="nx">country</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Germany&#39;</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Sada prikažimo sve korisnike:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="promena-izgleda-tabele">
+<h3>Promena izgleda tabele<a class="headerlink" href="#promena-izgleda-tabele" title="Permalink to this heading">¶</a></h3>
+<p><em>create_table</em> metod ima više opcija. Promenimo, na primer, prikazana polja i visinu
+tabele.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">fields</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;firstname&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;lastname&#39;</span><span class="p">],</span><span class="w"> </span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="mf">600</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="kreiranje-ulaznih-elemenata">
+<h3>Kreiranje ulaznih elemenata<a class="headerlink" href="#kreiranje-ulaznih-elemenata" title="Permalink to this heading">¶</a></h3>
+<p>Kreirajmo tabelu za prikaz podataka i otvorimo dataset:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="kreiranje-edit-forme">
+<h3>Kreiranje edit forme<a class="headerlink" href="#kreiranje-edit-forme" title="Permalink to this heading">¶</a></h3>
+<p>Sada ćemo demonstrirati <em>create_input</em> metodu i, da uradimo to, dodaćemo div sa
+id = ‘fields’ u div sa id = ‘content’:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div id=&#39;fields&#39;&gt;&quot;</span><span class="p">))</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">col_count</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">fields</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;firstname&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;lastname&#39;</span><span class="p">],</span><span class="w"> </span><span class="nx">col_count</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">col_count</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">label_on_top</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">col_count</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">})</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">col_count</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="nx">label_width</span><span class="o">:</span><span class="w"> </span><span class="mf">90</span><span class="p">})</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Za kompletiranje ovog demo-a, omogućimo da korisnik edituje zapise <em>Customers</em> noda.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">on_after_scroll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">record_count</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="nx">item</span><span class="p">.</span><span class="nx">edit</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Zapisi su promenjeni na klijentu, ali promene nisu sačuvane u bazi podataka. Da
+sačuvamo promene, napišimo još jedan event hendler:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">on_before_scroll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">item</span><span class="p">.</span><span class="nx">apply</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Koristimo kopiju customers noda da sprečimo promenu ponašanje originala customers
+noda, event hendleri koji su dodati su asocirani samo sa kopijom noda.</p>
+</div>
+<p>Postoje još dve metode: <em>create_filter_inputs</em> i <em>create_param_inputs</em>. Oni rade
+kao <em>create_inputs</em>, ali oni se koriste za editovanje filterskih vrednosti podataka
+i vrednosti parametara izveštaja stvki..</p>
+<p class="rubric"><strong>Footnotes</strong></p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Kod Jam.py okvira je imao više promena od vremena nastanka ovog zapisa.
+Dakle prikazaćemo suštinu na malo drugačiji način.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Hijerarhijsko procesiranje eventa je ono što razlikuje Jam.py, kao i maloj
+veličini dodatog koda i nekoj vrsti nasleđenog ponašanja.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Forme</a><ul>
+<li><a class="reference internal" href="#jam-py-sabloni">Jam.py šabloni</a></li>
+<li><a class="reference internal" href="#eventi-forme">Eventi forme</a></li>
+<li><a class="reference internal" href="#kontrole-svesne-podataka">Kontrole svesne podataka</a><ul>
+<li><a class="reference internal" href="#kreiranje-tabelarnog-prikaza-podataka">Kreiranje tabelarnog prikaza podataka</a></li>
+<li><a class="reference internal" href="#paginacija">Paginacija</a></li>
+<li><a class="reference internal" href="#filtriranje-podataka">Filtriranje podataka</a></li>
+<li><a class="reference internal" href="#promena-izgleda-tabele">Promena izgleda tabele</a></li>
+<li><a class="reference internal" href="#kreiranje-ulaznih-elemenata">Kreiranje ulaznih elemenata</a></li>
+<li><a class="reference internal" href="#kreiranje-edit-forme">Kreiranje edit forme</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="task_tree.html"
+                          title="previous chapter">Task stablo</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="datasets.html"
+                          title="next chapter">Dataset</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/forms.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

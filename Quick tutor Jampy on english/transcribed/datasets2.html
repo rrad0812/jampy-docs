@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Datasets 2 &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with data on the server" href="datasets3.html" />
+    <link rel="prev" title="Datasets" href="datasets.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="../contents.html">Table of contents</a>
+                    </li>
+                    
+                    <li>
+                        <a href="datasets.html">Prev</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="datasets3.html">Next</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <h4 class="doc-title text-center"><a href="http://jam-py.com/docs/">Jam.py documentation</a></h4>
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <div class="section" id="datasets-2">
+<h1>Datasets 2<a class="headerlink" href="#datasets-2" title="Permalink to this headline">¶</a></h1>
+<p>Before we start, we will create a copy of the catalog item and make a table to
+display data.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span> <span class="o">=</span> <span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">copy</span><span class="p">()</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">),</span> <span class="p">{</span><span class="nx">height</span><span class="o">:</span> <span class="mi">820</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="asynchronously-and-synchronously-function-calls">
+<h2>Asynchronously and synchronously function calls<a class="headerlink" href="#asynchronously-and-synchronously-function-calls" title="Permalink to this headline">¶</a></h2>
+<p>The open and apply methods can have callback and async parameters. If callback
+function is passed as a parameter or one of parameters is true, the request to
+the server is executed asynchronously, and after that, as the dataset is received,
+the callback function, if defined, will be executed.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">c</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">record_count</span><span class="p">())</span>
+<span class="p">}</span> <span class="p">)</span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Otherwise the request is executed synchronously.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-open-method">
+<h2>The <em>open</em> method<a class="headerlink" href="#the-open-method" title="Permalink to this headline">¶</a></h2>
+<p>It can have the following parameters: options, callback, async.
+Options parameter is an object that can have the following attributes:
+<em>expanded</em>, <em>fields</em>, <em>where</em>, <em>order_by</em>, <em>open_empty</em>, <em>funcs</em>, <em>group_by</em>,
+<em>limit</em>, <em>offset</em>.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">where</span><span class="o">:</span> <span class="p">{</span><span class="nx">value__range</span><span class="o">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]},</span>
+    <span class="nx">fields</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">],</span>
+    <span class="nx">order_by</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="nx">callback</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">item</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="s1">&#39;Total records: &#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">record_count</span><span class="p">())</span>
+<span class="p">}</span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The order of parameters doesn’t matter. Some parameters can be omitted!
+Let’s demonstrate the <em>func</em> parameter:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="nx">where</span><span class="o">:</span> <span class="p">{</span><span class="nx">value__range</span><span class="o">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]},</span>
+        <span class="nx">fields</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
+        <span class="nx">funcs</span><span class="o">:</span> <span class="p">{</span><span class="nx">value</span><span class="o">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="kc">true</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>There are auxiliary methods: <em>set_where</em>, <em>set_fields</em>, <em>set_order_by</em>. Calling
+these methods before the open method is similar to specifying corresponding parameters</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">({</span>
+    <span class="nx">where</span><span class="o">:</span> <span class="p">{</span><span class="nx">value__range</span><span class="o">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]},</span>
+    <span class="nx">fields</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">],</span>
+    <span class="nx">order_by</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nx">callback</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>It is the same as:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">(</span> <span class="p">{</span><span class="nx">value__range</span><span class="o">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]}</span> <span class="p">)</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">set_fields</span><span class="p">(</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="p">)</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">set_order_by</span><span class="p">(</span> <span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]</span> <span class="p">)</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After calling the open method, the action of these methods is canceled.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This can be used, for example, by setting filtering before calling the view method,
+which calls the open method in the <em>on_view_form_created</em> event handler.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">set_where</span><span class="p">(</span> <span class="p">{</span><span class="nx">value__range</span><span class="o">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">60</span><span class="p">]}</span> <span class="p">)</span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">view</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="filtering-of-the-records">
+<h2>Filtering of the records<a class="headerlink" href="#filtering-of-the-records" title="Permalink to this headline">¶</a></h2>
+<p>There are three ways to define what records an item dataset will get from the database
+table:</p>
+<ol class="arabic simple">
+<li><p>When the open method is called specify <em>where</em> parameter,</p></li>
+<li><p>Call the <em>set_where</em> method, before calling the open method,</p></li>
+<li><p>Use filters.</p></li>
+</ol>
+<p>Let’s we create the <em>value_ge</em> filter for the value field, with filter type GE
+(greater than or equal to). Let’s set its value to 50.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">filters</span><span class="p">.</span><span class="nx">value_ge</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Filtering is performed as follows:</p>
+<ul>
+<li><p>When where parameter is specified, it is always used, even if the <em>set_where</em>
+method was called or the element has filters whose values are set.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">({</span><span class="nx">value__ge</span><span class="o">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">({</span><span class="nx">where</span><span class="o">:</span> <span class="p">{</span><span class="nx">value__ge</span><span class="o">:</span> <span class="mi">90</span><span class="p">}},</span> <span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>When where parameter is omitted the parameter passed to the <em>set_where</em> method
+is used.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">({</span><span class="nx">value__ge</span><span class="o">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>When the <em>where</em> parameter is omitted and the <em>set_where</em> method was not called,
+filters are used</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>To disable a filter set its value to null</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">filters</span><span class="p">.</span><span class="nx">value_ge</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">null</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <em>where</em> parameter of the open method is a dictionary, whose keys are names
+of the fields that are followed, after double underscore, by a filter symbol.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">For EQ (equal) filter the filtering symbol <em>__eq</em> can be omitted.</div>
+<div class="line">For example {id: 100} is equivalent to {id__eq: 100}.</div>
+</div>
+</div>
+<p>For more information, see the Documentation.</p>
+</div>
+</div>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../contents.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Datasets 2</a><ul>
+<li><a class="reference internal" href="#asynchronously-and-synchronously-function-calls">Asynchronously and synchronously function calls</a></li>
+<li><a class="reference internal" href="#the-open-method">The <em>open</em> method</a></li>
+<li><a class="reference internal" href="#filtering-of-the-records">Filtering of the records</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="datasets.html"
+                        title="previous chapter">Datasets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="datasets3.html"
+                        title="next chapter">Working with data on the server</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/transcribed/datasets2.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Copyright &copy; <a href="http://yushev.ru/en/index.html">Andrew Yushev</a> 2015-2018
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

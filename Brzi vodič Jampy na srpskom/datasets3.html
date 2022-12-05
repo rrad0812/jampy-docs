@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Rad sa podacima na serveru &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polja i filteri" href="fields_filters.html" />
+    <link rel="prev" title="Asinhroni i sinhroni pozivi" href="datasets2.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="datasets2.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="fields_filters.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="rad-sa-podacima-na-serveru">
+<h1>Rad sa podacima na serveru<a class="headerlink" href="#rad-sa-podacima-na-serveru" title="Permalink to this heading">¶</a></h1>
+<section id="poziv-server-javascript-metode">
+<h2>Poziv <em>server</em> javascript metode<a class="headerlink" href="#poziv-server-javascript-metode" title="Permalink to this heading">¶</a></h2>
+<p>Definišimo <em>delete_all</em> funkciju na serveru</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delete_all</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">eof</span><span class="p">():</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Izvršimo je koristeći <em>server</em> methodu. Posle izvršenja pozivamo <em>open</em> metodu
+da prikažemo promene.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;delete_all&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Funkcije na serveru mogu biti izvršene u paralelnim nitima. Zbog toga uvek moramo
+kreirati kopije noda kada radimo sa serverskim datsetom.</p>
+</div>
+<p>Definišimo funkciju za dodavaje zapisa u tabelu baze podataka:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_records</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">();</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">();</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;add_records&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">],</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Definišimo funkciju za promenu zapisa:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">change</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="n">delta</span><span class="p">;</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">();</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1000</span><span class="p">],</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Metode za rad na sserveru su iste kao na klijentu.</p>
+<p>Možete proslediti <em>options</em> rečnik <em>open</em> metodi na isti način kao na klijentu:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">list_records</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">open</span><span class="p">({</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value__ge&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">},</span> <span class="s1">&#39;order_by&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]})</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;list_records&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ili proslediti parametre kao ključne argumente:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">list_records</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;value__ge&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">},</span> <span class="n">order_by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;list_records&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Isto je za <em>set_where</em>, <em>set_fields</em>, <em>set_order_by</em> methode. Na prmer, resultat
+izvršenja sledećih parova funkcija je isti:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">item</span><span class="o">.</span><span class="n">set_where</span><span class="p">({</span><span class="s1">&#39;value__ge&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">,</span> <span class="s1">&#39;date__gt&#39;</span><span class="p">:</span> <span class="n">now</span><span class="p">})</span>
+<span class="n">item</span><span class="o">.</span><span class="n">set_where</span><span class="p">(</span><span class="n">value__ge</span><span class="o">=</span><span class="mi">1090</span><span class="p">,</span> <span class="n">date__gt</span><span class="o">=</span><span class="n">now</span><span class="p">)</span>
+
+<span class="n">copy</span><span class="o">.</span><span class="n">set_fields</span><span class="p">([</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="n">copy</span><span class="o">.</span><span class="n">set_fields</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+<span class="n">copy</span><span class="o">.</span><span class="n">set_order_by</span><span class="p">([</span><span class="s1">&#39;-value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="n">copy</span><span class="o">.</span><span class="n">set_order_by</span><span class="p">(</span><span class="s1">&#39;-value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="poziv-execute-i-execute-select-metoda">
+<h2>Poziv <em>execute</em> i <em>execute_select</em> metoda<a class="headerlink" href="#poziv-execute-i-execute-select-metoda" title="Permalink to this heading">¶</a></h2>
+<p>Drugi način rada sa podacima iz baze podataka je korišćenje <em>execute</em> i <em>execute_select</em>
+metoda taska. Ove metode koriste aplikacioni konekcioni pool. Koristićemo sa njiima
+<em>table_name</em> atribut noda.</p>
+<p>Koristite <em>execute_select</em> metodu za izvršavanje sql select upita. Ova metoda vraća
+listu zapisa:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pool_execute_select</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute_select</span><span class="p">(</span><span class="s1">&#39;select name, value from </span><span class="si">%s</span><span class="s1"> where deleted = 0&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">r</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;pool_execute_select&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Za <em>catalog</em> nod, vrednost ‘Soft Delete’ atributa je postavljen na <em>true</em>,
+što znači da <em>delete</em> metoda ne uklanja zapis iz tabele, već koristi deleted
+polje da označi zapis kao obrisan. <em>open</em> metoda noda uzima to u obzir, u
+svim drugim slučajevima morate dodati uslov:  <em>deleted = 0</em>.</p>
+</div>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pool_execute_select</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute_select</span><span class="p">(</span><span class="s1">&#39;select count(*) from </span><span class="si">%s</span><span class="s1"> where deleted = 0&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s1">&#39;not deleted&#39;</span><span class="p">,</span> <span class="n">res</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute_select</span><span class="p">(</span><span class="s1">&#39;select count(*) from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">res</span>
+</pre></div>
+</div>
+<p>Neka je <em>catalog</em> tabela prazna, dodajmo 10 zapisa korišćenjem <em>execute</em> metode taska</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pool_execute</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">delete_sql</span> <span class="o">=</span> <span class="s1">&#39;delete from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span>
+    <span class="n">add_sql</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">add_sql</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;insert into </span><span class="si">%s</span><span class="s2"> (value, name, deleted) values (</span><span class="si">%d</span><span class="s2">, &#39;</span><span class="si">%s</span><span class="s2">&#39;, 0)&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute</span><span class="p">([</span><span class="n">delete_sql</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_sql</span><span class="p">)</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;pool_execute&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Parametar execute metoda može biti query string, lista query stringova, lista
+listi itd.</p>
+<p>Svi upiti su izvršeni u jednoj transakciji i ako je izvršenje uspešno <em>commit</em>
+komanda je pozvana, inače izvršava se <em>rollback</em> komanda.</p>
+</div>
+</section>
+<section id="poziv-create-connection-metode">
+<h2>Poziv <em>create_connection</em> metode<a class="headerlink" href="#poziv-create-connection-metode" title="Permalink to this heading">¶</a></h2>
+<p>Treći način da čitate ili pišete u bazu podataka je kreiranje konekcije koristeći
+<em>create_connection</em> metodu taska ili korišćenjem sqlite3 <em>connect</em> funkcije
+(za <em>SQLITE</em> bazu podataka)</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">use_connection</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">create_connection</span><span class="p">()</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;delete from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into </span><span class="si">%s</span><span class="s2"> (value, name, deleted) values (</span><span class="si">%d</span><span class="s2">, &#39;</span><span class="si">%s</span><span class="s2">&#39;, 0)&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;use_connection&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="k">def</span> <span class="nf">sqlite3_connection</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;ds.sqlite&#39;</span><span class="p">)</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;delete from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into </span><span class="si">%s</span><span class="s2"> (value, name, deleted) values (</span><span class="si">%d</span><span class="s2">, &#39;</span><span class="si">%s</span><span class="s2">&#39;, 0)&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;sqlite3_connection&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ne zaboravite da zatvorite konekciju.</p>
+</div>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Rad sa podacima na serveru</a><ul>
+<li><a class="reference internal" href="#poziv-server-javascript-metode">Poziv <em>server</em> javascript metode</a></li>
+<li><a class="reference internal" href="#poziv-execute-i-execute-select-metoda">Poziv <em>execute</em> i <em>execute_select</em> metoda</a></li>
+<li><a class="reference internal" href="#poziv-create-connection-metode">Poziv <em>create_connection</em> metode</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="datasets2.html"
+                          title="previous chapter">Asinhroni i sinhroni pozivi</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="fields_filters.html"
+                          title="next chapter">Polja i filteri</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/datasets3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

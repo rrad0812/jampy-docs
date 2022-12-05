@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Polja i filteri &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Klijent - server interakcija" href="client-server.html" />
+    <link rel="prev" title="Rad sa podacima na serveru" href="datasets3.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="datasets3.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="client-server.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="polja-i-filteri">
+<h1>Polja i filteri<a class="headerlink" href="#polja-i-filteri" title="Permalink to this heading">¶</a></h1>
+<p>Za ovu sesiju kreiramo jedan žurnal, sa imenom <em>journal</em>, sa različitim tipovima
+polja:</p>
+<ul class="simple">
+<li><p><em>currency</em>, tipa currency,</p></li>
+<li><p><em>date</em>, tipa date,</p></li>
+<li><p><em>integer</em>, tipa integer,</p></li>
+<li><p><em>lookup</em>, tipa integer, <em>lookup_item</em> je <em>catalog</em>,</p></li>
+<li><p><em>lookup_value</em>, tipa integer, <em>lookup_value</em> je catalog.value.</p></li>
+</ul>
+<section id="polja-dataseta">
+<h2>Polja dataseta<a class="headerlink" href="#polja-dataseta" title="Permalink to this heading">¶</a></h2>
+<p>Svi tipovi noda osim <em>reports-a</em> imaju <em>fields</em> atribut - listu objekata koje se koriste
+za reprezentovanje polja dataseta:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Da pročitamo listu svih polja dataseta</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">fields</span><span class="w"></span>
+
+<span class="c1">// Da iteriramo polja dataseta</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">fields</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">field</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">fields</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="p">,</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">field_caption</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Drugi način za iteriranje polja dataseta je korišćenje *each_field* metode:</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">each_field</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">field</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="p">,</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">field_caption</span><span class="p">);</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
+
+<span class="c1">// Ovde su dva polja koja nisu prikazana.</span><span class="w"></span>
+<span class="c1">// To su common polja deklarisana u grupi noda.</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Pored atributa <em>field_name</em>, objekat Field ima:</p>
+<ul class="simple">
+<li><p><em>caption_name</em> atribut koji se prikazuje korisniku u formi kao labela,</p></li>
+<li><p><em>owner</em> atribut koji sadrži objekat noda u čijem datasetu je dato polje.</p></li>
+</ul>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">date</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">owner</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">currency</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">currency</span><span class="p">.</span><span class="nx">owner</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="pristup-poljima-dataseta-noda">
+<h2>Pristup poljima dataseta noda<a class="headerlink" href="#pristup-poljima-dataseta-noda" title="Permalink to this heading">¶</a></h2>
+<p>Za pristup poljima dataseta noda, objekat polja ima sledeće osobine:</p>
+<ul class="simple">
+<li><p><em>data</em>,</p></li>
+<li><p><em>value</em>,</p></li>
+<li><p><em>text</em>,</p></li>
+<li><p><em>lookup_value</em>,</p></li>
+<li><p><em>lookup_text</em>,</p></li>
+<li><p><em>display_text</em>.</p></li>
+</ul>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Da bi podesili vrednost polja tekućeg zapisa koristimo value osobinu:</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">value</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">currency</span><span class="p">.</span><span class="nx">value</span><span class="w"></span>
+
+<span class="c1">// Kada čitamo vrednost polja, vrednost je konvertovana u tip polja.</span><span class="w"></span>
+<span class="c1">// Za polja tipa integer, float i currency, ako je value polja null,</span><span class="w"></span>
+<span class="c1">// vraćena vrednost je 0.</span><span class="w"></span>
+<span class="c1">// Da dobijemo nekonvertovanu vrednost koristimo data osobinu</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">currency</span><span class="p">.</span><span class="nx">data</span><span class="w"></span>
+
+<span class="c1">// Da podesimo vrednost polja kao text koristimo text osobinu.</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">currency</span><span class="p">.</span><span class="nx">text</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Ovde su dva <em>lookup</em> polja:</p>
+<ul class="simple">
+<li><p><em>lookup</em> i</p></li>
+<li><p><em>lookup_value</em>.</p></li>
+</ul>
+<p><em>lookup</em> polje je <em>master</em> polje za <em>lookup_value</em> polje.</p>
+<p>Ova polja imaju istu vrednost <em>value</em> osobine. To je vrednost primarnog ključa,
+polja <em>id</em> u nodu <em>catalog</em>, koja je <em>lookup item</em> za ova polja.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Da pročitamo vrednost lookup polja</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">lookup</span><span class="p">.</span><span class="nx">value</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">lookup_value</span><span class="p">.</span><span class="nx">value</span><span class="w"></span>
+
+<span class="c1">// Lookup polja imaju lookup_value i lookup_text osobine.</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">lookup</span><span class="p">.</span><span class="nx">lookup_value</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">lookup</span><span class="p">.</span><span class="nx">lookup_text</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">lookup_value</span><span class="p">.</span><span class="nx">lookup_value</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">lookup_value</span><span class="p">.</span><span class="nx">lookup_text</span><span class="w"></span>
+
+<span class="c1">// Osobina display_text sadrži tekst prikazan korisniku u vizuelnim kontrolama</span><span class="w"></span>
+<span class="c1">// Za polja date, time, currency i float, tekst prikazan korisniku je određen</span><span class="w"></span>
+<span class="c1">// parametrima postavljenim u locale parametru u dijalogu Projects parameters.</span><span class="w"></span>
+<span class="o">%</span><span class="nx">d</span><span class="p">.</span><span class="o">%</span><span class="nx">m</span><span class="p">.</span><span class="o">%</span><span class="nx">Y</span><span class="w"></span>
+<span class="o">%</span><span class="nx">Y</span><span class="o">-%</span><span class="nx">m</span><span class="o">-%</span><span class="nx">d</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>data</em> i <em>display_text</em> osobine su read-only.</p>
+<p>Promene <em>lookup_value</em> i <em>lookup_text</em> osobina se ne smeštaju u bazu podataka.</p>
+</div>
+</section>
+<section id="event-hendleri-objekta-field">
+<h2>Event hendleri objekta Field<a class="headerlink" href="#event-hendleri-objekta-field" title="Permalink to this heading">¶</a></h2>
+<p>Nodovi generišu neke evente povezane sa poljima. Event hendlerima koji procesiraju
+te evente je prosleđen kao parametar objekat polja.</p>
+<section id="on-field-get-text-event-hendler">
+<h3><em>on_field_get_text</em> event hendler<a class="headerlink" href="#on-field-get-text-event-hendler" title="Permalink to this heading">¶</a></h3>
+<p>Možete promeniti način kako vizuelna kontrola prikazuje vrednost polja pišući
+<em>on_field_get_text</em> hendler.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_field_get_text</span><span class="p">(</span><span class="nx">field</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;date&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toDateString</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="on-field-changed-event-hendler">
+<h3><em>on_field_changed</em> event hendler<a class="headerlink" href="#on-field-changed-event-hendler" title="Permalink to this heading">¶</a></h3>
+<p>Napišimo <em>on_field_changed</em> event hendler da odgovorimo na promene podataka polja.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_field_changed</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span><span class="w"> </span><span class="nx">lookup_item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">owner</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;integer&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">item</span><span class="p">.</span><span class="nx">currency</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ovaj event je generisan svaki put kada se vrednost polja promeni. To može dovesti
+do beskonačne petlje.</p>
+<p>Na primer:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_field_changed</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span><span class="w"> </span><span class="nx">lookup_item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;integer&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>U ovom slučaju, možete da uradite sledeće da sprečite izvršenje event koda posle
+promene vrednosti polja:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_field_changed</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span><span class="w"> </span><span class="nx">lookup_item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;integer&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">field</span><span class="p">.</span><span class="nx">_calculating</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">field</span><span class="p">.</span><span class="nx">_calculating</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">field</span><span class="p">.</span><span class="nx">_calculating</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p><em>lookup_item</em> parametar je specificiran kada korisnik menja lookup polje izborom
+vrednosti iz <em>lookup</em> noda ili korišćenjem <em>typeahead-a</em>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_field_changed</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span><span class="w"> </span><span class="nx">lookup_item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">lookup_item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lookup_item</span><span class="p">.</span><span class="nx">item_name</span><span class="p">,</span><span class="w"> </span><span class="nx">lookup_item</span><span class="p">.</span><span class="nx">id</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="on-field-validate-event-hendler">
+<h3><em>on_field_validate</em> event hendler<a class="headerlink" href="#on-field-validate-event-hendler" title="Permalink to this heading">¶</a></h3>
+<p>Napišimo <em>on_field_validate</em> event hendler da proverimo promenu napravljenu na polju.
+Ovde ćemo pridružiti kod hendleru dinamički:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">on_field_validate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">field</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;Field value must be greater than zero&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Gornji kod može biti smešten bilo gde u jam.py kodu i čak u nekim drugim event
+hendlerima. Drugačije rečeno, može uzeti drugačije forme u zavisnosti od vrednosti
+nekih eksternih varijabli ili polja.</p>
+</div>
+</section>
+<section id="on-field-select-value-event-handler">
+<h3><em>on_field_select_value</em> event handler<a class="headerlink" href="#on-field-select-value-event-handler" title="Permalink to this heading">¶</a></h3>
+<p>Napišimo <em>on_field_select_value</em> event hendler da sepcificiramo polja koja će biti
+prikazana i postavljeni filteri za lookup nod.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">on_field_select_value</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span><span class="w"> </span><span class="nx">lookup_item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">field_name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;lookup&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">lookup_item</span><span class="p">.</span><span class="nx">view_options</span><span class="p">.</span><span class="nx">fields</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">lookup_item</span><span class="p">.</span><span class="nx">set_where</span><span class="p">({</span><span class="nx">value__range</span><span class="o">:</span><span class="w">  </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">]});</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="filteri">
+<h3>Filteri<a class="headerlink" href="#filteri" title="Permalink to this heading">¶</a></h3>
+<p>Svi nodovi imaju <em>filters</em> atribut - listu filter objekata koji se koriste za vizeulno
+određivanje vrednosti filter parametara.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Da iteriramo preko filterske liste:</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">filters</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">filters</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">filter</span><span class="p">.</span><span class="nx">filter_name</span><span class="p">,</span><span class="w"> </span><span class="nx">filter</span><span class="p">.</span><span class="nx">filter_caption</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Drugi način iteriranja preko filterske liste j korišćenjem *each_filter* metode:</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">each_filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">filter</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">filter</span><span class="p">.</span><span class="nx">filter_name</span><span class="p">,</span><span class="w"> </span><span class="nx">filter</span><span class="p">.</span><span class="nx">filter_caption</span><span class="p">);</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
+
+<span class="c1">// Pristup objektu filtera:</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">filters</span><span class="p">.</span><span class="nx">date</span><span class="w"></span>
+
+<span class="c1">// Da dobijemo ili postavimo vrednost value osobine filtera:</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">filters</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">()</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">journal</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Nodovi mogu generisati neke evente povezane sa filterima.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Polja i filteri</a><ul>
+<li><a class="reference internal" href="#polja-dataseta">Polja dataseta</a></li>
+<li><a class="reference internal" href="#pristup-poljima-dataseta-noda">Pristup poljima dataseta noda</a></li>
+<li><a class="reference internal" href="#event-hendleri-objekta-field">Event hendleri objekta Field</a><ul>
+<li><a class="reference internal" href="#on-field-get-text-event-hendler"><em>on_field_get_text</em> event hendler</a></li>
+<li><a class="reference internal" href="#on-field-changed-event-hendler"><em>on_field_changed</em> event hendler</a></li>
+<li><a class="reference internal" href="#on-field-validate-event-hendler"><em>on_field_validate</em> event hendler</a></li>
+<li><a class="reference internal" href="#on-field-select-value-event-handler"><em>on_field_select_value</em> event handler</a></li>
+<li><a class="reference internal" href="#filteri">Filteri</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="datasets3.html"
+                          title="previous chapter">Rad sa podacima na serveru</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="client-server.html"
+                          title="next chapter">Klijent - server interakcija</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/fields_filters.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

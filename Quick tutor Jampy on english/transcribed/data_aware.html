@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Data aware controls &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Datasets" href="datasets.html" />
+    <link rel="prev" title="Form events" href="form_events.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="../contents.html">Table of contents</a>
+                    </li>
+                    
+                    <li>
+                        <a href="form_events.html">Prev</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="datasets.html">Next</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <h4 class="doc-title text-center"><a href="http://jam-py.com/docs/">Jam.py documentation</a></h4>
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <div class="section" id="data-aware-controls">
+<h1>Data aware controls<a class="headerlink" href="#data-aware-controls" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-create-table-method">
+<h2>The <em>create_table</em> method<a class="headerlink" href="#the-create-table-method" title="Permalink to this headline">¶</a></h2>
+<p>Let’s clear the div with the id = ‘content’ and add a div with the id = ‘table’ to it.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">).</span><span class="nx">empty</span><span class="p">()</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div id=&#39;table&#39;&gt;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now we create a copy of the customers item, call the create_table method and fill it
+with data, calling the open method.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span> <span class="o">=</span> <span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">copy</span><span class="p">()</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">))</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Let’s close the customer item and set its paginate attribute to true.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">close</span><span class="p">()</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">paginate</span> <span class="o">=</span> <span class="kc">true</span>
+</pre></div>
+</div>
+<p>When this attribute is set, the create_table method calculates the number of rows for
+a given table height (the default value is 480 pixels) and creates a pagination control.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The open method retrieves from the server the number of records calculated by the table</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now the table loads records from the server, when necessary.</p>
+<p>Let’s display records of customers from Germany:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">set_where</span><span class="p">({</span><span class="nx">country</span><span class="o">:</span> <span class="s1">&#39;Germany&#39;</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now we show all customers:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The create_table method has many options. Let’s change, for example, the displayed
+fields and the height of the table.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">),</span> <span class="p">{</span><span class="nx">fields</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;firstname&#39;</span><span class="p">,</span> <span class="s1">&#39;lastname&#39;</span><span class="p">],</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For other options, see the documentation.</p>
+</div>
+<div class="section" id="the-create-input-method">
+<h2>The <em>create_input</em> method<a class="headerlink" href="#the-create-input-method" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#table&#39;</span><span class="p">))</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now we will demonstrate the create_input method and, to do this, we will add a div with
+id = ‘fields’ to the div with id = ‘content’:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;&lt;div id=&#39;fields&#39;&gt;&quot;</span><span class="p">))</span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">))</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span> <span class="p">{</span><span class="nx">col_count</span><span class="o">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span> <span class="p">{</span><span class="nx">fields</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;firstname&#39;</span><span class="p">,</span> <span class="s1">&#39;lastname&#39;</span><span class="p">],</span> <span class="nx">col_count</span><span class="o">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span> <span class="p">{</span><span class="nx">col_count</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">label_on_top</span><span class="o">:</span> <span class="kc">true</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span> <span class="p">{</span><span class="nx">col_count</span><span class="o">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_inputs</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#fields&#39;</span><span class="p">),</span> <span class="p">{</span><span class="nx">col_count</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">label_width</span><span class="o">:</span> <span class="mi">90</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>To complete this demo, let’s allow the user to edit the records of the customers item.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">on_after_scroll</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">record_count</span><span class="p">())</span>
+    <span class="nx">item</span><span class="p">.</span><span class="nx">edit</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Records are changed on the client, but these changes are not saved in the database.
+To save the changes, let’s add one more event handler:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">on_before_scroll</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">item</span><span class="p">.</span><span class="nx">apply</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To learn how <em>edit</em>, <em>apply</em>, <em>on_before_scroll</em>, <em>on_after_scroll</em> work, see
+the following videos.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We used a copy of the customers item to prevent the behavior of the customers item itself
+from changing, the event handlers that we added are only associated with the copy.</p>
+</div>
+<p>There are two other methods: <em>create_filter_inputs</em> and <em>create_param_inputs</em>. They work
+just like create_inputs, but they are used to edit filters values of data items and
+parameter values of report items.</p>
+</div>
+</div>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../contents.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data aware controls</a><ul>
+<li><a class="reference internal" href="#the-create-table-method">The <em>create_table</em> method</a></li>
+<li><a class="reference internal" href="#the-create-input-method">The <em>create_input</em> method</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="form_events.html"
+                        title="previous chapter">Form events</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="datasets.html"
+                        title="next chapter">Datasets</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/transcribed/data_aware.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Copyright &copy; <a href="http://yushev.ru/en/index.html">Andrew Yushev</a> 2015-2018
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

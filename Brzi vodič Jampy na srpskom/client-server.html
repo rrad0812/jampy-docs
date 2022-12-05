@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Klijent - server interakcija &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Polja i filteri" href="fields_filters.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="fields_filters.html">Pret</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="klijent-server-interakcija">
+<h1>Klijent - server interakcija<a class="headerlink" href="#klijent-server-interakcija" title="Permalink to this heading">¶</a></h1>
+<p>Klijentska aplikacija šalje zahtev serveru svaki put kada je jedna od sledećih metoda
+pozvana:</p>
+<ul class="simple">
+<li><p><em>load</em>,</p></li>
+<li><p><em>open</em>,</p></li>
+<li><p><em>apply</em>,</p></li>
+<li><p><em>server</em>,</p></li>
+<li><p><em>total_records</em> metoda noda ili</p></li>
+<li><p><em>print</em> metoda report noda.</p></li>
+</ul>
+<p><em>total_records</em> metodu poziva tabela za prikaz broja strana u paginatoru.</p>
+<p>Sve ove metode koriste <em>process_request</em> metodu taska da pošalju zahtev na server.
+Možete postaviti breakpoint da proverite sve kljent-server interakcije.</p>
+<section id="proces-request-metoda">
+<h2><em>proces_request</em> metoda<a class="headerlink" href="#proces-request-metoda" title="Permalink to this heading">¶</a></h2>
+<p><em>process_request</em> metoda šalje na server sledeće informacije:</p>
+<ul class="simple">
+<li><p><em>ime zahteva</em></p></li>
+<li><p><em>ID taska</em></p></li>
+<li><p><em>ID noda</em>, čiji je metod pozvan,</p></li>
+<li><p><em>parametre zahteva</em></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Svaki nod task stabla ima jedinstveni ID atribut.</p>
+</div>
+<p>Server po prijemu zahteva, pronalazi odgovarajući task ( Project task ili
+Administrator task), i nod na serveru, izvršava odgovarajuću metodu noda sa
+prosleđenim parametrima i vraća rezultat na klijent.</p>
+<p>Serverske metode mogu pokrenuti evente koji mogu modifikovati nihovo podrazumevano
+ponašanje.</p>
+<p>Svaki nod taska stabla na serveru ima:</p>
+<ul class="simple">
+<li><p><em>environ</em></p></li>
+<li><p><em>session</em></p></li>
+</ul>
+<p>atribute koji smeštaju kontekst tekućeg zahteva.</p>
+</section>
+<section id="server-metoda-noda-na-klijentu">
+<h2><em>server</em> metoda noda na klijentu<a class="headerlink" href="#server-metoda-noda-na-klijentu" title="Permalink to this heading">¶</a></h2>
+<p>Pogledajmo bliže <em>server</em> metodu noda na klijentu. Ona se može koristiti za izvršenje
+funkcije deklarisane u server modulu noda. Na primer, možemo izvršiti test funkciju
+deklarisanu u server modulu <em>catalog</em> noda:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="p">],</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"></span>
+<span class="p">})</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Izvršavajući server funkciju, prosleđujemo joj ime funkcije na serveru i listu
+parametara.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prvi parametar funkcije na serveru mora biti objekat noda.</p>
+</div>
+<p>Ako je callback funkcija definisana, server metoda se izvršava asinhrono, posle
+toga callback se izvršava sa parametrima:</p>
+<ul class="simple">
+<li><p><em>result</em> serverske funkcije i</p></li>
+<li><p><em>error text</em>, ako je izuzetak podignut za vreme izvršenja serverske funkcije.</p></li>
+</ul>
+<p>Inače, server metod se izvršava sinhrono i vraća rezultat izvršenja. Ako je izuzetak
+podignut za vreme izvršenja, server metoda baca izuzetak.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Some error&#39;</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="p">],</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"></span>
+<span class="p">})</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Unutar serverske funkcije možete pristuiti <em>environ</em> i <em>session</em> atributima i pozvati
+<em>can_view</em>, <em>can_create</em>, <em>can_edit</em>, <em>can_delete</em> metode.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="nb">print</span> <span class="s1">&#39;Session:&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span>
+  <span class="nb">print</span> <span class="s1">&#39;Environment&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">environ</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="p">],</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"></span>
+<span class="p">})</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Postavimo <em>safe mode</em> i promenimo privilegije korisničke role:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="nb">print</span> <span class="s1">&#39;User_name&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span>
+  <span class="nb">print</span> <span class="s1">&#39;Role_id&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;role_id&#39;</span><span class="p">]</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can view&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_view</span><span class="p">()</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can create&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_create</span><span class="p">()</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can edit&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_edit</span><span class="p">()</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can delete&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_delete</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>Možete koristiti <em>item.session[‘user_info’][‘role_id’]</em> ili <em>can_view</em>, <em>can_create</em>,
+<em>can_edit</em>, <em>can_delete</em> metode noda da ograničite korisnikova prava.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;role_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">, you are not allowed to perform this operation&#39;</span> <span class="o">%</span> \
+          <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;user_name&#39;</span><span class="p">])</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="p">],</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">task</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">})</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Pored ovoga klijent server mehanizma razmene možete preuzimati fajlove sa serverskog
+static direktorijuma, podizati fajlove na server, koristeći klijent task upload metodu,
+i procesirati post zahteve iz drugih aplikacija ili servisa, koristeći <em>on_ext_request</em>
+event handler server task objekta.</p>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Klijent - server interakcija</a><ul>
+<li><a class="reference internal" href="#proces-request-metoda"><em>proces_request</em> metoda</a></li>
+<li><a class="reference internal" href="#server-metoda-noda-na-klijentu"><em>server</em> metoda noda na klijentu</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="fields_filters.html"
+                          title="previous chapter">Polja i filteri</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/client-server.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

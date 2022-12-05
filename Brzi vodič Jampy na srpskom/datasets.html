@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Dataset &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Asinhroni i sinhroni pozivi" href="datasets2.html" />
+    <link rel="prev" title="Forme" href="forms.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="forms.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="datasets2.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="dataset">
+<h1>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Dataset</em> je skup zapisa, smešten u memoriju.</p>
+</div>
+<p>Za ovu sesiju kreiramo jednostavnu aplikaciju pod nazivom <em>Datasets</em>. Potom kreiramo
+jedan nod tipa <em>Catalog</em>, pod imenom <em>catalog</em>. Neka ovaj nod ima dva polja:</p>
+<ul class="simple">
+<li><p><em>name</em>, tipa <em>text</em>, lenght = 256,</p></li>
+<li><p><em>value</em>, tipa <em>integer</em>.</p></li>
+</ul>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Pre nego počnemo, kreiraćemo kopiju noda catalog,</span><span class="w"></span>
+<span class="c1">// a potom kreirati tabelu za prikaz podataka:</span><span class="w"></span>
+<span class="nx">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">copy</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">create_table</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="nx">height</span><span class="o">:</span><span class="w"> </span><span class="mf">820</span><span class="p">})</span><span class="w"></span>
+
+<span class="c1">// Pre nego što možemo koristiti dataset moramo pozvati open metodu.</span><span class="w"></span>
+<span class="c1">// Ova metoda šalje zahtev na server da dobije dataset iz catalog tabele.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+
+<span class="c1">// Pošto je tabela prazna, dataset ne sarži zapise.</span><span class="w"></span>
+<span class="c1">// Ovo možemo verifikovati pozivom record_count metode.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">record_count</span><span class="p">()</span><span class="w">           </span><span class="c1">// 0</span><span class="w"></span>
+
+<span class="c1">// Napunimo dataset sa zapisima:</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">append</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Record &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">post</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="navigacija-dataseta">
+<h2>Navigacija dataseta<a class="headerlink" href="#navigacija-dataseta" title="Permalink to this heading">¶</a></h2>
+<p>Sada, možemo da se krećemo po datasetu:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Idi na prvi zapis dataseta</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">first</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Idi na poslednji zapis dataseta</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">last</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// rec_no uzima ili postavlja broj zapisa dataseta za tekući</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">rec_no</span><span class="w">                   </span><span class="c1">// 9</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">rec_no</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5</span><span class="w">               </span><span class="c1">// 5</span><span class="w"></span>
+
+<span class="c1">// Idi na sledeći zapis dataseta</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Idi na prethodni zapis dataseta</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">prior</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="iteriranje-dataseta">
+<h2>Iteriranje dataseta<a class="headerlink" href="#iteriranje-dataseta" title="Permalink to this heading">¶</a></h2>
+<p>Dve metode: <em>bof()</em> i <em>eof()</em>, vraćaju <em>true</em> ako je napravljen pokušaj preko
+prvog odnosno preko poslednjeg zapisa. One nam omogućuje jednostavno iteriranje
+svih zapisa u datasetu:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">//Iteriranje korišćenjem while petlje</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">first</span><span class="p">()</span><span class="w"></span>
+<span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">c</span><span class="p">.</span><span class="nx">eof</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Iteriranje korišćenjem each metode dataseta:</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span><span class="w"></span>
+<span class="p">})</span><span class="w"></span>
+
+<span class="c1">// Možemo zaustaviti iteriranje vraćanjem false:</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nx">retun</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">})</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="azuriranje-dataseta">
+<h2>Ažuriranje dataseta<a class="headerlink" href="#azuriranje-dataseta" title="Permalink to this heading">¶</a></h2>
+<p>Da promenimo zapis, potrebno je da postavimo dataset u <em>edit</em> mod.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Postavljanje edit moda pozivanjem edit metode dataseta.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">edit</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Kada je zapis u edit modu, is_edited i is_changing metode vraćaju true.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">is_edited</span><span class="p">()</span><span class="w">              </span><span class="c1">// true</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">is_changing</span><span class="p">()</span><span class="w">            </span><span class="c1">// true</span><span class="w"></span>
+
+<span class="c1">// Da sačuvamo promene u memoriji, pozivamo post metodu. Post metoda je automatski</span><span class="w"></span>
+<span class="c1">// pozvana kada kursor - trenutni pokazivač položaja u datasetu - pomerimo na drugi zapis.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5000</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">post</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Posle poziva post metode dataset nije u edit modu,</span><span class="w"></span>
+<span class="c1">// metode is_edited i is_changing vraćaju false.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">is_edited</span><span class="p">()</span><span class="w">              </span><span class="c1">// false</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">is_changing</span><span class="p">()</span><span class="w">            </span><span class="c1">// false</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Kada pokušamo da promenimo vrednost polja zapisa, a dataset nije u edit modu,
+izuzetak je bačen.</p>
+</div>
+</section>
+<section id="append-insert-novog-zapisa-u-dataset">
+<h2>Append/insert novog zapisa u dataset<a class="headerlink" href="#append-insert-novog-zapisa-u-dataset" title="Permalink to this heading">¶</a></h2>
+<p>Kada dodajemo ili insertujemo zapis u dataset:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dodavanje zapisa:</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">append</span><span class="p">()</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">is_new</span><span class="p">()</span><span class="w">                 </span><span class="c1">// true</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">is_changing</span><span class="p">()</span><span class="w">            </span><span class="c1">// true</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">11</span><span class="w"></span>
+
+<span class="c1">// Insertovanje zapisa</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">insert</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Da odustanemo od <em>edit</em> ili <em>append/insert</em> pozivamo <em>cancel</em> metodu.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">cancel</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="brisanje-zapisa-iz-dataseta">
+<h2>Brisanje zapisa iz dataseta<a class="headerlink" href="#brisanje-zapisa-iz-dataseta" title="Permalink to this heading">¶</a></h2>
+<p>Do obrišemo zapis pozivamo <em>delete</em> metodu.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Brisanje tekućeg zapisa</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="ow">delete</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Ova metoda briše zapis i pomera kurzor na sledeći zapis.</span><span class="w"></span>
+<span class="c1">// Tako možemo obrisati sve zapise u datasetu.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">first</span><span class="p">()</span><span class="w"></span>
+<span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">c</span><span class="p">.</span><span class="nx">eof</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="ow">delete</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="omogucavanje-onemogucavanje-svesnosti-kontrola">
+<h2>Omogućavanje/Onemogućavanje svesnosti kontrola<a class="headerlink" href="#omogucavanje-onemogucavanje-svesnosti-kontrola" title="Permalink to this heading">¶</a></h2>
+<p>Svaki put kada dodajemo, menjamo ili brišemo zapis, vizuelne kontrole prikazuju
+te promene. Zato kažemo da su to kontrole svesne podataka.</p>
+<p>Medjutim kada to radimo u batch procesu to može trajati neko vreme. Da sprečimo
+neprestano osvežavanje strane a samim tim usporavanje kompletnog procesa koristimo
+metode:</p>
+<ul class="simple">
+<li><p><em>disable_controls</em>,</p></li>
+<li><p><em>enable_controls</em>,</p></li>
+<li><p><em>update_controls</em>.</p></li>
+</ul>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dodajemo 2500 zapisa</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">disable_controls</span><span class="p">()</span><span class="w"></span>
+<span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">2000</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">append</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Record &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">post</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">finally</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">enable_controls</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">update_controls</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">record_count</span><span class="p">()</span><span class="w">           </span><span class="c1">// 2500</span><span class="w"></span>
+
+<span class="c1">// Sada brišemo svih 2500 zapisa</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">disable_controls</span><span class="p">()</span><span class="w"></span>
+<span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">first</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">c</span><span class="p">.</span><span class="nx">eof</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="ow">delete</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">finally</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">enable_controls</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">update_controls</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="trajne-promene-dataseta">
+<h2>Trajne promene dataseta<a class="headerlink" href="#trajne-promene-dataseta" title="Permalink to this heading">¶</a></h2>
+<p>Dodajemo ponovo 1000 zapisa:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dodajmo 1000 zapisa</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">disable_controls</span><span class="p">()</span><span class="w"></span>
+<span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1000</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">append</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Record &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">post</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">finally</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">enable_controls</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">update_controls</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Zapisi su smešteni u memoriji, a tabela u bazi podataka je prazna.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">record_count</span><span class="p">()</span><span class="w">           </span><span class="c1">// 1000 zapisa u memoriji</span><span class="w"></span>
+
+<span class="c1">// Ako pozovemo open metodu, rezultujući dataset će biti takođe biti prazan.</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w">               </span><span class="c1">// uzmi zapise tabele baze podataka</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">record_count</span><span class="p">()</span><span class="w">           </span><span class="c1">// 0 zapisa u tabeli jer apply metoda nije pozvana</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Nod upisuju u dnevnike promena dataseta, ako je  <em>log_changes</em> atribut podešen.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">log_changes</span><span class="w">             </span><span class="c1">// true</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">disable_controls</span><span class="p">()</span><span class="w"></span>
+<span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1000</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">append</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Record &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="nx">post</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">finally</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">enable_controls</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">update_controls</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">edit</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1000000</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+
+<span class="c1">// Obrišimo zapise</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">disable_controls</span><span class="p">()</span><span class="w"></span>
+<span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">first</span><span class="p">()</span><span class="w"></span>
+<span class="w">  </span><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">c</span><span class="p">.</span><span class="nx">eof</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">c</span><span class="p">.</span><span class="ow">delete</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">finally</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">enable_controls</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">update_controls</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Otvorimo ponovo dataset</span><span class="w"></span>
+<span class="c1">// U datasetu će biti 1000 zapisa učitanih iz tabela baze podataka</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">record_count</span><span class="p">()</span><span class="w">         </span><span class="c1">// 1000 učitano iz baze podataka</span><span class="w"></span>
+</pre></div>
+</div>
+<p><em>Open</em> metoda čita dataset iz tabele baze podataka asocirane sa nodom, a <em>apply</em>
+metoda piše promene napravljene na datasetu u bazu podataka.</p>
+</section>
+<section id="event-hendleri-dataseta">
+<h2>Event hendleri dataseta<a class="headerlink" href="#event-hendleri-dataseta" title="Permalink to this heading">¶</a></h2>
+<p>Metode:</p>
+<ul class="simple">
+<li><p><em>append</em>,</p></li>
+<li><p><em>insert</em>,</p></li>
+<li><p><em>edit</em>,</p></li>
+<li><p><em>cancel</em>,</p></li>
+<li><p><em>post</em> i</p></li>
+<li><p><em>apply</em></p></li>
+</ul>
+<p>imaju odgovarajući <em>on_before</em> kao i <em>on_after</em> event koji se pokreće pre ili posle
+odgovarajuće metode. Možete prekinuti izvršavanje ovih metoda bacanjem izuzetka
+(<em>throw</em>) ili pozivanjem <em>abort</em> metode.</p>
+<p>Ima više eventa pokrenutih ovim metodama. <em>on_before_scroll</em> i <em>on_after_scroll</em>
+pokreće aplikacija pre i posle prelaska sa jednog na drugi zapis.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">on_before_scroll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">item</span><span class="p">.</span><span class="nx">abort</span><span class="p">(</span><span class="s1">&#39;No way&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>U gornjem primeru, kada pokušate da se pomerite sa tekućeg zapisa, exception će se
+dogoditi sa tekstom “No way”.</p>
+<p>Definišimo <em>before_post</em> event hendler, tako da promeni vrednost polja name pre
+upisa promena u memoiju (<em>post</em>):</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">c</span><span class="p">.</span><span class="nx">on_before_scroll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">undefined</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">before_post</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;record&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">append</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1001</span><span class="w">          </span><span class="c1">// c.name.value = 1001</span><span class="w"></span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">post</span><span class="p">()</span><span class="w"></span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="w">                  </span><span class="c1">// record1001</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Dataset</a><ul>
+<li><a class="reference internal" href="#navigacija-dataseta">Navigacija dataseta</a></li>
+<li><a class="reference internal" href="#iteriranje-dataseta">Iteriranje dataseta</a></li>
+<li><a class="reference internal" href="#azuriranje-dataseta">Ažuriranje dataseta</a></li>
+<li><a class="reference internal" href="#append-insert-novog-zapisa-u-dataset">Append/insert novog zapisa u dataset</a></li>
+<li><a class="reference internal" href="#brisanje-zapisa-iz-dataseta">Brisanje zapisa iz dataseta</a></li>
+<li><a class="reference internal" href="#omogucavanje-onemogucavanje-svesnosti-kontrola">Omogućavanje/Onemogućavanje svesnosti kontrola</a></li>
+<li><a class="reference internal" href="#trajne-promene-dataseta">Trajne promene dataseta</a></li>
+<li><a class="reference internal" href="#event-hendleri-dataseta">Event hendleri dataseta</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="forms.html"
+                          title="previous chapter">Forme</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="datasets2.html"
+                          title="next chapter">Asinhroni i sinhroni pozivi</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/datasets.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

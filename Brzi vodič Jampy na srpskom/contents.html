@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Brzi uvod u Jam.py &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Brzi uvod u Jam.py" href="index.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="#">Sadržaj</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="index.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="brzi-uvod-u-jam-py">
+<h1>Brzi uvod u Jam.py<a class="headerlink" href="#brzi-uvod-u-jam-py" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Brzi uvod u Jam.py</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Pregled</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#jam-py-ima-snaznu-biblioteku">Jam.py ima snažnu biblioteku</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#dogadajima-voden-jam-py-okvir">Događajima vođen Jam.py okvir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#zakljucak">Zaključak</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Početak</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#python-instalacija">Python instalacija</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#virtuelni-enviroment">Virtuelni enviroment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#jam-py-instalacija">Jam.py instalacija</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#kreiranje-novog-jam-py-projekta">Kreiranje novog Jam.py projekta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#kucna-strana-aplikacije">Kućna strana aplikacije</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#kreiranje-noda-u-grupi-catalogs">Kreiranje noda u grupi <em>Catalogs</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#dodajmo-nekog-korisnika">Dodajmo nekog korisnika</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#kreiranje-noda-u-grupi-journals">Kreiranje noda u grupi <em>Journals</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#kreiranje-lookup-liste">Kreiranje <em>lookup liste</em></a></li>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#kreiranje-noda-u-grupi-journals-nastavak">Kreiranje noda u grupi <em>Journals</em> - nastavak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#dodajmo-malo-koda">Dodajmo malo koda</a></li>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#podesavanje-view-i-edit-forme">Podešavanje <em>view</em> i <em>edit</em> forme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#demonstracija-rada-sa-html-sablonima">Demonstracija rada sa html šablonima</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="task_tree.html">Task stablo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="task_tree.html#klijent-task">Klijent task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task_tree.html#server-task">Server task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task_tree.html#jam-py-radni-tok">Jam.py radni tok</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="forms.html">Forme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="forms.html#jam-py-sabloni">Jam.py šabloni</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms.html#eventi-forme">Eventi forme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms.html#kontrole-svesne-podataka">Kontrole svesne podataka</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="forms.html#kreiranje-tabelarnog-prikaza-podataka">Kreiranje tabelarnog prikaza podataka</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms.html#paginacija">Paginacija</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms.html#filtriranje-podataka">Filtriranje podataka</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms.html#promena-izgleda-tabele">Promena izgleda tabele</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms.html#kreiranje-ulaznih-elemenata">Kreiranje ulaznih elemenata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms.html#kreiranje-edit-forme">Kreiranje edit forme</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#navigacija-dataseta">Navigacija dataseta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#iteriranje-dataseta">Iteriranje dataseta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#azuriranje-dataseta">Ažuriranje dataseta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#append-insert-novog-zapisa-u-dataset">Append/insert novog zapisa u dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#brisanje-zapisa-iz-dataseta">Brisanje zapisa iz dataseta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#omogucavanje-onemogucavanje-svesnosti-kontrola">Omogućavanje/Onemogućavanje svesnosti kontrola</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#trajne-promene-dataseta">Trajne promene dataseta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#event-hendleri-dataseta">Event hendleri dataseta</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datasets2.html">Asinhroni i sinhroni pozivi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datasets2.html#open-metoda"><em>open</em> metoda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datasets2.html#pomocne-metode">Pomoćne metode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="datasets2.html#filtriranje-zapisa">Filtriranje zapisa</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datasets3.html">Rad sa podacima na serveru</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datasets3.html#poziv-server-javascript-metode">Poziv <em>server</em> javascript metode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets3.html#poziv-execute-i-execute-select-metoda">Poziv <em>execute</em> i <em>execute_select</em> metoda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets3.html#poziv-create-connection-metode">Poziv <em>create_connection</em> metode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fields_filters.html">Polja i filteri</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fields_filters.html#polja-dataseta">Polja dataseta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fields_filters.html#pristup-poljima-dataseta-noda">Pristup poljima dataseta noda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fields_filters.html#event-hendleri-objekta-field">Event hendleri objekta Field</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fields_filters.html#on-field-get-text-event-hendler"><em>on_field_get_text</em> event hendler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fields_filters.html#on-field-changed-event-hendler"><em>on_field_changed</em> event hendler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fields_filters.html#on-field-validate-event-hendler"><em>on_field_validate</em> event hendler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fields_filters.html#on-field-select-value-event-handler"><em>on_field_select_value</em> event handler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fields_filters.html#filteri">Filteri</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="client-server.html">Klijent - server interakcija</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="client-server.html#proces-request-metoda"><em>proces_request</em> metoda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="client-server.html#server-metoda-noda-na-klijentu"><em>server</em> metoda noda na klijentu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="next chapter">Brzi uvod u Jam.py</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/contents.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

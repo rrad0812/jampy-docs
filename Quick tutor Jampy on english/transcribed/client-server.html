@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>The client-server interaction &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Business application builder" href="../admin/index.html" />
+    <link rel="prev" title="Fields and filters" href="fields_filters.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="../contents.html">Table of contents</a>
+                    </li>
+                    
+                    <li>
+                        <a href="fields_filters.html">Prev</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="../admin/index.html">Next</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <h4 class="doc-title text-center"><a href="http://jam-py.com/docs/">Jam.py documentation</a></h4>
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <div class="section" id="the-client-server-interaction">
+<h1>The client-server interaction<a class="headerlink" href="#the-client-server-interaction" title="Permalink to this headline">¶</a></h1>
+<p>The client application sends a request to the server each time the following methods
+are called:</p>
+<ul class="simple">
+<li><p>load method of the task,</p></li>
+<li><p>open,</p></li>
+<li><p>apply,</p></li>
+<li><p>server,</p></li>
+<li><p>total_records methods of a data item or</p></li>
+<li><p>print method of a report item.</p></li>
+</ul>
+<p>The total_records method is called by a table to display the number of pages in
+the paginator.</p>
+<p>All these methods use the <em>process_request</em> method of the task to send a request
+to the server. You can set a breakpoint there to check all client-server interactions.
+The <em>process_request</em> method sends to the server the following information:</p>
+<ul class="simple">
+<li><p><em>name of the request</em></p></li>
+<li><p><em>ID of the task</em></p></li>
+<li><p><em>ID of the item</em>, whose method was called</p></li>
+<li><p><em>request parameters</em></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each item of the task tree has a unique ID attribute.</p>
+</div>
+<p>The server on receiving the request, based on passed IDs, finds the corresponding
+task (it can be Project task or Administrator task) and the item on the server,
+executes an appropriate method of the item with passed parameters and returns
+the result of the execution to the client.</p>
+<p>The server methods can trigger events that can modify their default behavior.</p>
+<p>Every item of the task tree on the server has the</p>
+<ul class="simple">
+<li><p>the <em>environ</em> and</p></li>
+<li><p>the <em>session</em></p></li>
+</ul>
+<p>attributes that store context of the current request.</p>
+<p>Let’s take a closer look at the <em>server</em> method of the item on the client. You can
+use it to execute a function declared in the server module of an item.For example,
+we can execute the test function declared in the server module of the catalog item:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>by using the <em>server</em> method</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>We pass it, the name of the function and the list of parameters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first parameter of the function on the server must be an item object.</p>
+</div>
+<p>If a callback function is specified, the function on the server is executed asynchronously,
+after which the callback is executed with parameters that are:</p>
+<ul class="simple">
+<li><p>the <em>result</em> of the server function and</p></li>
+<li><p>the <em>error text</em>, if an exception was raised during the server function execution.</p></li>
+</ul>
+<p>Otherwise the server method is executed synchronously and returns the result of
+execution. If an exception was raised during execution, the server method throws
+an exception.</p>
+<p>Let’s raise an Exception:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Some error&#39;</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Knowing all of these you can access the <em>environ</em> and <em>session</em> attributes and call
+the <em>can_view</em>, <em>can_create</em>, <em>can_edit</em>, <em>can_delete</em> methods.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="nb">print</span> <span class="s1">&#39;Session:&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span>
+  <span class="nb">print</span> <span class="s1">&#39;Environment&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">environ</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Let’s set a safe mode and change the privileges of the user role</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="nb">print</span> <span class="s1">&#39;User_name&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span>
+  <span class="nb">print</span> <span class="s1">&#39;Role_id&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;role_id&#39;</span><span class="p">]</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can view&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_view</span><span class="p">()</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can create&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_create</span><span class="p">()</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can edit&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_edit</span><span class="p">()</span>
+  <span class="nb">print</span> <span class="s1">&#39;Can delete&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">can_delete</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>You can use <em>item.session[‘user_info’][‘role_id’]</em> or item’s <em>can_view</em>,
+<em>can_create</em>, <em>can_edit</em>, <em>can_delete</em> methods to limit user rights.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;role_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">, you are not allowed to perform this operation&#39;</span> <span class="o">%</span> \
+          <span class="n">item</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_info&#39;</span><span class="p">][</span><span class="s1">&#39;user_name&#39;</span><span class="p">])</span>
+  <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">catalog</span><span class="p">.</span><span class="nx">server</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">task</span><span class="p">.</span><span class="nx">warning</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Besides this client-server exchange mechanism you can download files from server
+static folder, upload files to the server, using the client task upload method,
+and process post requests from other application or services by using the <em>on_ext_request</em>
+event handler by the server task.</p>
+</div>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fields_filters.html"
+                        title="previous chapter">Fields and filters</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../admin/index.html"
+                        title="next chapter">Business application builder</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/transcribed/client-server.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Copyright &copy; <a href="http://yushev.ru/en/index.html">Andrew Yushev</a> 2015-2018
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

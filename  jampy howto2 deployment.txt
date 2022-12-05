@@ -1,0 +1,405 @@
+
+How to deploy jam-py app at Linux Apache http server?
+=====================================================
+
+So basically deploying straight into the ie an cloud server with open 22, 80 and 443 port. 
+Prerequisite is a signed certificate for the DNS server name (YOUR_SERVER DNS entry from below). 
+One can use a self signed, etc, not covering those. 
+Also, Python installed and sudo access (or root for Linux). 
+I have no idea at all about the MS Servers, sorry.
+
+The App is in read only mode. 
+You can access admin.html page, but can't change anything. 
+Took me some fiddling with Google Cloud server, this is a micro Ubuntu instance, plain apache2 install with apt-get.
+
+1.	Install wsgi module for Apache : 
+
+apt-get install libapache2-mod-wsgi
+
+2.	Enable ssl, wsgi module for apache:
+
+a2enmod ssl wsgi
+
+3.	Create a custom file for jam-py app, ie /etc/apache2/sites-available/test.conf, for example (still wip):
+
+<IfModule mod_ssl.c>
+  <VirtualHost YOUR_IP:443>
+    ServerName YOUR_SERVER
+    ServerAlias
+    ServerAdmin YOUR_EMAIL
+    ErrorLog ${APACHE_LOG_DIR}/test-error-sec.log
+    CustomLog ${APACHE_LOG_DIR}/test-access-sec.log combined
+    
+    #below is for cx_Oracle
+    SetEnv LD_LIBRARY_PATH /u01/app/oracle/product/11.2.0/xe/lib
+    SetEnv ORACLE_SID XE
+    SetEnv ORACLE_HOME /u01/app/oracle/product/11.2.0/xe
+    #finish cx_Oracle
+    
+    DocumentRoot /var/www/html/simpleassets
+    
+    SSLEngine on
+    SSLCertificateFile  "/etc/ssl/private/your.crt"
+    SSLCertificateKeyFile  "/etc/ssl/private/your.key"
+    SSLCertificateChainFile "/etc/ssl/private/your_chain.crt"
+    SSLCACertificateFile   "/etc/ssl/private/your_CA.crt"
+
+    WSGIDaemonProcess  web user=www-data group=www-data processes=1 threads=5
+    WSGIScriptAlias / /var/www/html/simpleassets/wsgi.py
+    
+    <Directory /var/www/html/simpleassets>
+      Options +ExecCGI
+      SetHandler wsgi-script
+      AddHandler wsgi-script .py
+
+      Order deny,allow
+      Allow from all
+      Require all granted
+    
+      <Files wsgi.py>
+        Order deny,allow
+        Allow from all
+
+        # comment the following for ubuntu <13
+        Require all granted
+      </Files>
+    </Directory>
+    
+    <Directory /var/www/html/simpleassets/static>
+      # comment the following for ubuntu < 13
+      Require all granted
+    </Directory>
+  </VirtualHost>
+</IfModule>
+
+The above file is using signed certificate your.crt with your.key, and CA, chain file obtained from CA. 
+Please review resources on the net about certificates and the dns. 
+You'll need to obtain and copy those files in /etc/ssl/private folder. 
+Change YOUR_xyz with your preference.
+
+The /var/www/html is the default Ubuntu folder for serving web pages. 
+
+4.	Install jam-py as usual.
+
+I created the /var/www/html/simpleassets folder where unzipped jam-py SimpleAssets project from here #27. 
+Follow procedure explained there how to deploy these: 
+  - Basically, Export your project, save the zip file and copy it to your web hosting server desired folder. 
+  - Copy admin.sqlite and your database as well (providing you're using sqlite3 database). 
+  - If using some other database ie mysql, you'll need to export/import the database.
+
+5.	change ownership for your desired folder with Apache2 process user (www-data for ubuntu)
+
+For /var/www/html/simpleassets this is:
+
+chown -R www-data: /var/www/html/simpleassets
+
+6.	Enable test.conf  (the above file name with no extension):
+
+a2ensite test; 
+systemctl restart apache2
+
+At the moment, I've left port 80 as is, and jam-py is running only on https port. 
+To debug problems, I would start with SeLinux or apparmor. 
+With Ubuntu this might help:
+
+sudo /etc/init.d/apparmor stop
+
+
+
+How to run TWO jam-py instances on one https server?
+====================================================
+
+One possible answer to this problem is the DNS. 
+You might decide to set your DNS to ie second_instance.YOUR_SERVER name (the above live example would be jam2.research...).
+So the above test.conf file would be almost the same except YOUR_SERVER is now called second_instance. YOUR_SERVER
+
+The /etc/apache2/sites-available/test3.conf file:
+
+<IfModule mod_ssl.c>
+  <VirtualHost YOUR_IP:443>
+    ServerName second_instance.YOUR_SERVER
+    ServerAlias
+    ServerAdmin YOUR_EMAIL
+    ErrorLog ${APACHE_LOG_DIR}/test3-error-sec.log
+    CustomLog ${APACHE_LOG_DIR}/test3-access-sec.log combined
+    #below is for cx_Oracle
+    SetEnv LD_LIBRARY_PATH /u01/app/oracle/product/11.2.0/xe/lib
+    SetEnv ORACLE_SID XE
+    SetEnv ORACLE_HOME /u01/app/oracle/product/11.2.0/xe
+    #finish cx_Oracle
+    DocumentRoot /var/www/html/simpleassets3
+    SSLEngine on
+    SSLCertificateFile  "/etc/ssl/private/your.crt"
+    SSLCertificateKeyFile  "/etc/ssl/private/your.key"
+    SSLCertificateChainFile "/etc/ssl/private/your_chain.crt"
+    SSLCACertificateFile   "/etc/ssl/private/your_CA.crt"
+
+    WSGIDaemonProcess  assets3 user=www-data group=www-data processes=1 threads=5
+    WSGIScriptAlias / /var/www/html/simpleassets3/wsgi.py
+
+    <Directory /var/www/html/simpleassets3>
+      Options +ExecCGI
+      SetHandler wsgi-script
+      AddHandler wsgi-script .py
+
+      Order deny,allow
+      Allow from all
+      Require all granted
+      
+      <Files wsgi.py>
+        Order deny,allow
+        Allow from all
+
+        # comment the following for ubuntu <13
+        Require all granted
+      </Files>
+    </Directory>
+
+    <Directory /var/www/html/simpleassets3/static>
+      # comment the following for ubuntu < 13
+      Require all granted
+    </Directory>
+  </VirtualHost>
+</IfModule>
+
+The jam-py application second_instance lives now in ie /var/www/html/simpleassets3, 
+and WSGIDaemonProcess is adjusted to new daemon, called assets3. 
+Everything else is almost the same.
+
+This is possible because the SSL certificate is a * (star, or wildcard) certificate, 
+enabling you to run multiple services on one DNS domain.
+
+
+
+A step-by-step guide to deploy a Jam.py on the AWS?
+===================================================
+
+This is adapted from https://devops.profitbricks.com/tutorials/install-and-configure-mod_wsgi-on-ubuntu-1604-1/ 
+
+1.  Create an AWS account and login
+
+2.  Go to EC2, create an instance (in this case an Ubuntu 16.04 t2.micro)
+
+3.  Download the private key when prompted
+
+4.  Convert pem to ppk using Puttygen (see: https://stackoverflow.com/questions/3190667/convert-pem-to-ppk-file-format)
+
+5.  Get EC2 instance public DNS from AWS dashboard
+
+6.  SSH into EC2 instance using Putty (pointed to the Public DNS and your ppk)
+
+7.  Username is ubuntu
+
+8.  Refresh package library: 
+
+sudo apt-get update
+
+9.  Install pip: 
+
+sudo apt-get install python3-pip
+
+10. Install jam.py: 
+
+sudo pip3 install jam.py
+
+11. Install Apache: 
+
+sudo apt-get install apache2 apache2-utils libexpat1 ssl-cert
+
+12. Install mod-wsgi: 
+
+sudo apt-get install libapache2-mod-wsgi-py3
+
+13. Restart Apache: 
+
+sudo /etc/init.d/apache2 restart
+
+14. Move here: 
+
+cd /var/www/html/
+
+15. Create directory: 
+
+sudo mkdir [appname]
+
+16. Move here:
+
+cd [appname]
+
+17. Create app: 
+
+sudo jam-project.py
+
+18. Check it's there: 
+
+ls
+
+19. Create the config: 
+
+sudo nano /etc/apache2/conf-available/wsgi.conf
+
+
+20. Paste the following
+
+WSGIScriptAlias / /var/www/html/[appname]/wsgi.py
+WSGIPythonPath /var/www/html/[appname]
+
+<Directory /var/www/html/[appname]>
+  <Files wsgi.py>
+	Require all granted
+  </Files>
+</Directory>
+
+Alias /static/ /var/www/html/[appname]/static/
+
+<Directory /var/www/html/[appname]/static>
+  Require all granted
+</Directory>
+
+21. Exit and save
+
+22. Give file permissions to apache: 
+
+sudo chmod 777 /var/www/html/[appname]
+
+
+23. Give ownership to apache: 
+
+sudo chown -R www-data:www-data /var/www
+
+24. Enable wsgi: 
+
+sudo a2enconf wsgi
+
+25. Restart apache: 
+
+sudo /etc/init.d/apache2 restart
+
+26. Create security group on AWS to allow you to connect HTTP on port 80
+
+27. Assign instance to security group
+
+28. Test
+
+29. If it's not working, check the error logs to see what's going on: 
+
+nano /var/log/apache2/error.log
+
+
+
+How to do with gunicorn?
+========================
+
+Green Unicorn (gunicorn) is an HTTP/WSGI server designed to serve fast clients or sleepy applications. 
+That is to say; behind a buffering front-end server such as nginx or lighttpd. 
+By default, gunicorn will listen on 127.0.0.1. Navigate to jam app folder, or use (ie in scripts, cron job, etc)
+
+python /usr/bin/gunicorn --chdir /path/to/jam/app wsgi 
+
+or from /path/to/jam/App:
+
+gunicorn wsgi
+[2018-04-13 15:01:44 +0000] [8650] [INFO] Starting gunicorn 19.4.5
+[2018-04-13 15:01:44 +0000] [8650] [INFO] Listening at: http://127.0.0.1:8000 (8650)
+[2018-04-13 15:01:44 +0000] [8650] [INFO] Using worker: sync
+[2018-04-13 15:01:44 +0000] [8654] [INFO] Booting worker with pid: 8654
+.
+.
+
+To start jam.py on all interfaces and port 8081:
+
+gunicorn -b 0.0.0.0:8081 wsgi
+[2018-04-13 15:03:34 +0000] [8680] [INFO] Starting gunicorn 19.4.5
+[2018-04-13 15:03:34 +0000] [8680] [INFO] Listening at: http://0.0.0.0:8081 (8680)
+[2018-04-13 15:03:34 +0000] [8680] [INFO] Using worker: sync
+[2018-04-13 15:03:34 +0000] [8684] [INFO] Booting worker with pid: 8684
+.
+.
+
+Spin up 5 workers if u like with --workers=5
+Nginx: comment out default location in /etc/nginx/sites-enabled/default (Linux Mint):
+
+#location / {
+# First attempt to serve request as file, then
+# as directory, then fall back to displaying a 404.
+#  try_files $uri $uri/ =404;
+#}
+
+and add:
+
+# Proxy connections to the application servers
+# app_servers
+location / {
+  proxy_pass         http://app_servers;
+  proxy_redirect     off;
+  proxy_set_header   Host $host;
+  proxy_set_header   X-Real-IP $remote_addr;
+  proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header   X-Forwarded-Host $server_name;
+}
+
+add in /etc/nginx/nginx.conf 127.0.0.1:8081 if this is your Gunicorn server address and port:
+
+# Configuration containing list of application servers
+upstream app_servers {
+  server 127.0.0.1:8081;
+}
+
+This also enables to have different App servers on different ports:
+
+Client Request ----> Nginx (Reverse-Proxy)
+                        |
+                       /|\                           
+                      | | `-> App. Server I.   127.0.0.1:8081
+                      |  `--> App. Server II.  127.0.0.1:8082
+                       `----> App. Server III. 127.0.0.1:8083
+
+Restart nginx and viola!
+
+Now, certs: in /etc/nginx/sites-enabled/jam we can have something like this to pass everything 
+from http to https to 8001 port (or any other as per above):
+
+server {
+  listen 80;
+  server_name YOUR_SERVER;
+  access_log off;
+
+  location /static/ {
+    alias /path/to/jam/app/static/;
+  }
+
+  location / {
+    proxy_pass http://127.0.0.1:8001;
+    proxy_set_header X-Forwarded-Host $server_name;
+    proxy_set_header X-Real-IP $remote_addr;
+    add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+  }
+
+  return 301 https://$server_name$request_uri;
+}
+
+server {
+  listen 443;
+  server_name YOUR_SERVER_FQDN;
+  access_log off;
+
+  location /static/ {
+    alias /path/to/jam/app/static/;
+  }
+
+  location = /favicon.ico {
+    alias /path/to/jam/app/favicon.ico;
+  }
+ 
+  ssl on;
+  ssl_certificate /etc/nginx/ssl/YOUR_SERVER.crt;
+  ssl_certificate_key /etc/nginx/ssl/YOUR_SERVER.key;
+  add_header Strict-Transport-Security "max-age=31536000";
+
+  location / {
+    client_max_body_size 10M;
+    proxy_pass http://127.0.0.1:8001;
+    proxy_set_header X-Forwarded-Host $server_name;
+    proxy_set_header X-Real-IP $remote_addr;
+    add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+}

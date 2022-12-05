@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Pregled &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Početak" href="getting_started.html" />
+    <link rel="prev" title="Brzi uvod u Jam.py" href="index.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="index.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="getting_started.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="pregled">
+<h1>Pregled<a class="headerlink" href="#pregled" title="Permalink to this heading">¶</a></h1>
+<p>Jam.py je otvorenog koda, vođen događajima web okvr za razvoj web aplikacija na
+bazama podataka.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Jam.py koristi</p>
+<ul class="simple">
+<li><p><em>Python</em> i <em>Werkzeug</em> mrežnu biblioteku na serverskoj strani,</p></li>
+<li><p><em>Javascript</em>, <em>JQuery</em> i <em>Bootstrap</em> na klijentskoj strani,</p></li>
+<li><p><em>Application Builder</em> je deo okvirqa za grafičku izradu serverske i klijentske strane,</p></li>
+<li><p>Tuce predefinisanih <em>css</em> tema,</p></li>
+<li><p><em>SQLite</em>, <em>MySQL</em>, <em>PostgrSQL</em>, <em>Firebird</em>, <em>MS SQL Server</em> i <em>Oracle</em> baze
+podataka, za rad sa novim ili postojećim šemama baza podataka,</p></li>
+<li><p>LibreOffice šablone, za kreiranje izveštja, u pdf, excel ili csv formatima,</p></li>
+<li><p>Kontrole svesne podataka.</p></li>
+</ul>
+</div>
+<p>Možemo kreirati:</p>
+<ul class="simple">
+<li><p>Početne strane sa analitikom isto kao i velike aplikacije sa kompleksnom biznis logikom,</p></li>
+<li><p>Filtere za filtriranje podataka po jednom ili više izabranih uslova,</p></li>
+<li><p>Serch kriteijume za podatke po izabranim uslovma,</p></li>
+<li><p>Korisničke akcije pridružene predefinisanim javascript dugmadima,</p></li>
+<li><p>Kaskadno-povezani kombo-boksovi sa mogućnostima inkrementalne pretrage,</p></li>
+<li><p>Strane sa autentifikacionim i autorizacionim akcijama,</p></li>
+<li><p>Sistemi pomoći pridruženi kontrolama na formi,</p></li>
+<li><p>Aplikacije sa stranim python i javascript bibliotekama.</p></li>
+</ul>
+<section id="jam-py-ima-snaznu-biblioteku">
+<h2>Jam.py ima snažnu biblioteku<a class="headerlink" href="#jam-py-ima-snaznu-biblioteku" title="Permalink to this heading">¶</a></h2>
+<p>Pretpostavimo da smo kreirali <em>customers</em> nod u AppBuilder-u.</p>
+<p>Sada možemo:</p>
+<ul>
+<li><p>Kreirati modalnu, <em>modal</em> customers formu:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">view</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+<p>ili nemodalnu, <em>modeless</em> formu</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">view</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#content&#39;</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ovaj kod pokrećemo u browser-u.</p>
+</div>
+</li>
+<li><p>Uključiti <em>selections</em> ček-boksove:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">selections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Posle promene njihove vrednosti u <em>customers</em> formi, možemo proveriti njihov vrednosti:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">selections</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Ili ih isključiti:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">selections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">undefined</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Igrati se sa zapisima dataset-a:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Idi na sledeći zapis u tekućem datasetu</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Uzmi vrednost polja lastname tekućeg zapisa dataseta</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">lastname</span><span class="p">.</span><span class="nx">value</span><span class="w"></span>
+
+<span class="c1">// Edituj tekući zapis dataseta</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">create_edit_form</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Idi na sledeći zapis u datsetu</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Sada umetnimo prazan zapis u dataset, i editujmo ga</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">insert_record</span><span class="p">()</span><span class="w"></span>
+
+<span class="c1">// Sada postavimo vredost polja lastname</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">lastname</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Radosav&#39;</span><span class="w"></span>
+
+<span class="c1">// Sačuvajmo tekući zapis u bazi podataka</span><span class="w"></span>
+<span class="nx">task</span><span class="p">.</span><span class="nx">customers</span><span class="p">.</span><span class="nx">apply_record</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="dogadajima-voden-jam-py-okvir">
+<h2>Događajima vođen Jam.py okvir<a class="headerlink" href="#dogadajima-voden-jam-py-okvir" title="Permalink to this heading">¶</a></h2>
+<p>Napišimo <em>on_after_insert</em> event handler noda, sa poljem <em>unitprice</em>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="nx">item</span><span class="p">.</span><span class="nx">unitprice</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Od sada, svaki novi dodat zapis, imaće vrednost polja <em>unitprice</em> jednaku 1.0.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>on_after_insert</em> je pravo mesto za postavljanje podrazumevane vrednosti polja.</p>
+</div>
+</section>
+<section id="zakljucak">
+<h2>Zaključak<a class="headerlink" href="#zakljucak" title="Permalink to this heading">¶</a></h2>
+<p>Jam.py je <em>‘Sve u browseru’</em> okvir. Kompletni razvoj aplikacije je moguće izvesti
+unutar browser-a.</p>
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Pregled</a><ul>
+<li><a class="reference internal" href="#jam-py-ima-snaznu-biblioteku">Jam.py ima snažnu biblioteku</a></li>
+<li><a class="reference internal" href="#dogadajima-voden-jam-py-okvir">Događajima vođen Jam.py okvir</a></li>
+<li><a class="reference internal" href="#zakljucak">Zaključak</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Brzi uvod u Jam.py</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="getting_started.html"
+                          title="next chapter">Početak</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/overview.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

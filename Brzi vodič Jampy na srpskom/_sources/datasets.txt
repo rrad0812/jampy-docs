@@ -1,0 +1,349 @@
+=======
+Dataset
+=======
+
+
+.. note::
+	*Dataset* je skup zapisa, smešten u memoriju. 
+
+
+Za ovu sesiju kreiramo jednostavnu aplikaciju pod nazivom *Datasets*. Potom kreiramo 
+jedan nod tipa *Catalog*, pod imenom *catalog*. Neka ovaj nod ima dva polja:
+
+* *name*, tipa *text*, lenght = 256,
+* *value*, tipa *integer*.
+
+
+.. code-block:: js
+
+  // Pre nego počnemo, kreiraćemo kopiju noda catalog, 
+  // a potom kreirati tabelu za prikaz podataka:
+  c = task.catalog.copy()
+  c.create_table($('#content'), {height: 820})
+
+  // Pre nego što možemo koristiti dataset moramo pozvati open metodu. 
+  // Ova metoda šalje zahtev na server da dobije dataset iz catalog tabele.
+  c.open(true)
+  
+  // Pošto je tabela prazna, dataset ne sarži zapise. 
+  // Ovo možemo verifikovati pozivom record_count metode.
+  c.record_count()           // 0
+
+  // Napunimo dataset sa zapisima:
+  for (var i = 0; i < 10 ; i++ ) {
+    c.append();
+    c.name = 'Record ' + (i + 1);
+    c.value.value = i + 1;
+    c.post;
+  }
+  
+
+Navigacija dataseta
+===================
+
+Sada, možemo da se krećemo po datasetu:
+
+
+.. code-block:: js
+
+  // Idi na prvi zapis dataseta
+  c.first()
+  
+  // Idi na poslednji zapis dataseta
+  c.last()
+  
+  // rec_no uzima ili postavlja broj zapisa dataseta za tekući
+  c.rec_no                   // 9
+  c.rec_no = 5               // 5
+  
+  // Idi na sledeći zapis dataseta
+  c.next()
+  
+  // Idi na prethodni zapis dataseta
+  c.prior()
+
+
+Iteriranje dataseta
+===================
+
+Dve metode: *bof()* i *eof()*, vraćaju *true* ako je napravljen pokušaj preko 
+prvog odnosno preko poslednjeg zapisa. One nam omogućuje jednostavno iteriranje 
+svih zapisa u datasetu:
+
+
+.. code-block:: js
+
+  //Iteriranje korišćenjem while petlje
+  c.first()
+  while(!c.eof()) {
+    console.log(c.name.value);
+    c.next();
+  }
+
+  // Iteriranje korišćenjem each metode dataseta:
+  c.each(function(c) {
+      console.log(c.name.value);
+  })
+
+  // Možemo zaustaviti iteriranje vraćanjem false:
+  c.each(function(c) {
+      console.log(c.name.value);
+      if (c == 5) {
+        retun false;
+      }
+  })
+
+
+Ažuriranje dataseta
+===================
+
+Da promenimo zapis, potrebno je da postavimo dataset u *edit* mod. 
+
+
+.. code-block:: js
+
+  // Postavljanje edit moda pozivanjem edit metode dataseta.
+  c.edit()
+  
+  // Kada je zapis u edit modu, is_edited i is_changing metode vraćaju true.
+  c.is_edited()              // true
+  c.is_changing()            // true
+  
+  // Da sačuvamo promene u memoriji, pozivamo post metodu. Post metoda je automatski 
+  // pozvana kada kursor - trenutni pokazivač položaja u datasetu - pomerimo na drugi zapis.
+  c.value.value = 5000
+  c.post()
+  
+  // Posle poziva post metode dataset nije u edit modu,
+  // metode is_edited i is_changing vraćaju false.
+  c.is_edited()              // false
+  c.is_changing()            // false
+
+
+.. note::
+  Kada pokušamo da promenimo vrednost polja zapisa, a dataset nije u edit modu, 
+  izuzetak je bačen.
+
+
+Append/insert novog zapisa u dataset
+====================================
+
+Kada dodajemo ili insertujemo zapis u dataset:
+
+
+.. code-block:: js
+
+  // Dodavanje zapisa:  
+  c.append()
+  
+  c.is_new()                 // true
+  c.is_changing()            // true
+
+  c.value.value = 11
+  
+  // Insertovanje zapisa
+  c.insert()  
+  c.value.value = -1
+
+
+Da odustanemo od *edit* ili *append/insert* pozivamo *cancel* metodu.  
+
+
+.. code-block:: js
+
+  c.cancel()
+
+
+Brisanje zapisa iz dataseta
+===========================
+
+Do obrišemo zapis pozivamo *delete* metodu.  
+
+
+.. code-block:: js
+
+  // Brisanje tekućeg zapisa
+  c.delete()
+
+  // Ova metoda briše zapis i pomera kurzor na sledeći zapis. 
+  // Tako možemo obrisati sve zapise u datasetu.
+  c.first()
+  while(!c.eof()) {
+    c.delete();
+  }
+
+
+Omogućavanje/Onemogućavanje svesnosti kontrola
+==============================================
+
+Svaki put kada dodajemo, menjamo ili brišemo zapis, vizuelne kontrole prikazuju 
+te promene. Zato kažemo da su to kontrole svesne podataka.
+
+Medjutim kada to radimo u batch procesu to može trajati neko vreme. Da sprečimo 
+neprestano osvežavanje strane a samim tim usporavanje kompletnog procesa koristimo 
+metode: 
+
+* *disable_controls*, 
+* *enable_controls*, 
+* *update_controls*.
+
+
+.. code-block:: js
+
+  // Dodajemo 2500 zapisa
+  c.disable_controls()
+  try {
+    for (var i = 0; i < 2000 ; i++ ) {
+      c.append();
+      c.name = 'Record ' + (i + 1);
+      c.value.value = i + 1;
+      c.post;
+    }
+  }
+  finally {
+    c.enable_controls();
+    c.update_controls();
+  }
+
+  c.record_count()           // 2500
+  
+  // Sada brišemo svih 2500 zapisa
+  c.disable_controls()
+  try {
+    c.first()
+    while(!c.eof()) {
+      c.delete();
+    }
+  }
+  finally {
+    c.enable_controls();
+    c.update_controls();
+  }
+
+
+Trajne promene dataseta
+=======================
+
+Dodajemo ponovo 1000 zapisa:
+
+
+.. code-block:: js
+
+  // Dodajmo 1000 zapisa
+  c.disable_controls()
+  try {
+    for (var i = 0; i < 1000 ; i++ ) {
+      c.append();
+      c.name = 'Record ' + (i + 1);
+      c.value.value = i + 1;
+      c.post;
+    }
+  }
+  finally {
+    c.enable_controls();
+    c.update_controls();
+  }
+
+  // Zapisi su smešteni u memoriji, a tabela u bazi podataka je prazna. 
+  c.record_count()           // 1000 zapisa u memoriji
+  
+  // Ako pozovemo open metodu, rezultujući dataset će biti takođe biti prazan.
+  c.open(true)               // uzmi zapise tabele baze podataka
+  c.record_count()           // 0 zapisa u tabeli jer apply metoda nije pozvana 
+
+
+Nod upisuju u dnevnike promena dataseta, ako je  *log_changes* atribut podešen. 
+
+
+.. code-block:: js
+
+  c.log_changes             // true
+
+  c.disable_controls()
+  try {
+    for (var i = 0; i < 1000 ; i++ ) {
+      c.append();
+      c.name = 'Record ' + (i + 1);
+      c.value.value = i + 1;
+      c.post;
+    }
+  }
+  finally {
+    c.enable_controls();
+    c.update_controls();
+  }
+  
+  c.edit()
+  c.value.value = 1000000
+  c.apply(true)
+
+  // Obrišimo zapise
+  c.disable_controls()
+  try {
+    c.first()
+    while(!c.eof()) {
+      c.delete();
+    }
+  }
+  finally {
+    c.enable_controls();
+    c.update_controls();
+  }
+
+  // Otvorimo ponovo dataset
+  // U datasetu će biti 1000 zapisa učitanih iz tabela baze podataka
+  c.open(true)
+  c.record_count()         // 1000 učitano iz baze podataka
+
+
+*Open* metoda čita dataset iz tabele baze podataka asocirane sa nodom, a *apply* 
+metoda piše promene napravljene na datasetu u bazu podataka.
+
+
+Event hendleri dataseta
+=======================
+
+Metode: 
+
+* *append*, 
+* *insert*, 
+* *edit*, 
+* *cancel*, 
+* *post* i 
+* *apply*
+
+imaju odgovarajući *on_before* kao i *on_after* event koji se pokreće pre ili posle 
+odgovarajuće metode. Možete prekinuti izvršavanje ovih metoda bacanjem izuzetka 
+(*throw*) ili pozivanjem *abort* metode.
+
+Ima više eventa pokrenutih ovim metodama. *on_before_scroll* i *on_after_scroll* 
+pokreće aplikacija pre i posle prelaska sa jednog na drugi zapis. 
+
+
+.. code-block:: js
+
+  c.on_before_scroll = function(item) {
+    item.abort('No way');
+  }
+
+
+U gornjem primeru, kada pokušate da se pomerite sa tekućeg zapisa, exception će se 
+dogoditi sa tekstom "No way".
+
+Definišimo *before_post* event hendler, tako da promeni vrednost polja name pre 
+upisa promena u memoiju (*post*):
+
+.. code-block:: js
+
+  c.on_before_scroll = undefined
+  
+  c.before_post = function(item) {
+    c.name.value = 'record' + c.value.value;
+  }
+  
+  c.append()
+  c.value.value = 1001          // c.name.value = 1001
+  
+  c.post()
+  c.name.value                  // record1001
+  

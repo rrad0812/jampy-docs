@@ -1,0 +1,121 @@
+
+Pregled
+=======
+
+Jam.py je otvorenog koda, vođen događajima web okvr za razvoj web aplikacija na 
+bazama podataka.
+
+.. note::
+
+  Jam.py koristi
+  
+  * *Python* i *Werkzeug* mrežnu biblioteku na serverskoj strani,
+  * *Javascript*, *JQuery* i *Bootstrap* na klijentskoj strani,
+  * *Application Builder* je deo okvirqa za grafičku izradu serverske i klijentske strane,
+  * Tuce predefinisanih *css* tema,
+  * *SQLite*, *MySQL*, *PostgrSQL*, *Firebird*, *MS SQL Server* i *Oracle* baze 
+    podataka, za rad sa novim ili postojećim šemama baza podataka,
+  * LibreOffice šablone, za kreiranje izveštja, u pdf, excel ili csv formatima,
+  * Kontrole svesne podataka.
+
+Možemo kreirati:
+
+* Početne strane sa analitikom isto kao i velike aplikacije sa kompleksnom biznis logikom,
+* Filtere za filtriranje podataka po jednom ili više izabranih uslova,
+* Serch kriteijume za podatke po izabranim uslovma, 
+* Korisničke akcije pridružene predefinisanim javascript dugmadima,
+* Kaskadno-povezani kombo-boksovi sa mogućnostima inkrementalne pretrage,
+* Strane sa autentifikacionim i autorizacionim akcijama,
+* Sistemi pomoći pridruženi kontrolama na formi,
+* Aplikacije sa stranim python i javascript bibliotekama.
+
+
+Jam.py ima snažnu biblioteku
+----------------------------
+
+Pretpostavimo da smo kreirali *customers* nod u AppBuilder-u.
+
+Sada možemo: 
+
+* Kreirati modalnu, *modal* customers formu:
+
+  .. code-block:: js
+  
+    task.customers.view()
+
+
+  ili nemodalnu, *modeless* formu
+
+  .. code-block:: js
+
+    task.customers.view($('#content'))
+  
+
+  .. note::
+
+    Ovaj kod pokrećemo u browser-u.
+
+* Uključiti *selections* ček-boksove:
+  
+  .. code-block:: js
+  
+    task.customers.selections = []
+
+  Posle promene njihove vrednosti u *customers* formi, možemo proveriti njihov vrednosti:
+
+  .. code-block:: js
+    
+    task.customers.selections
+
+  Ili ih isključiti:
+  
+  .. code-block:: js
+
+    task.customers.selections = undefined
+
+* Igrati se sa zapisima dataset-a:
+
+  .. code-block:: js
+
+    // Idi na sledeći zapis u tekućem datasetu
+    task.customers.next()
+    
+    // Uzmi vrednost polja lastname tekućeg zapisa dataseta
+    task.customers.lastname.value
+    
+    // Edituj tekući zapis dataseta
+    task.customers.create_edit_form()
+    
+    // Idi na sledeći zapis u datsetu
+    task.customers.next()
+    
+    // Sada umetnimo prazan zapis u dataset, i editujmo ga  
+    task.customers.insert_record()
+    
+    // Sada postavimo vredost polja lastname 
+    task.customers.lastname.value = 'Radosav'
+    
+    // Sačuvajmo tekući zapis u bazi podataka
+    task.customers.apply_record()
+
+
+Događajima vođen Jam.py okvir
+-----------------------------
+
+Napišimo *on_after_insert* event handler noda, sa poljem *unitprice*:
+  
+.. code-block:: js
+    
+  item.unitprice.value = 1;
+    
+Od sada, svaki novi dodat zapis, imaće vrednost polja *unitprice* jednaku 1.0.
+
+.. note::
+
+  *on_after_insert* je pravo mesto za postavljanje podrazumevane vrednosti polja.
+
+
+Zaključak
+---------
+Jam.py je *'Sve u browseru'* okvir. Kompletni razvoj aplikacije je moguće izvesti 
+unutar browser-a.

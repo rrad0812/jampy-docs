@@ -1,0 +1,264 @@
+===============
+Polja i filteri
+===============
+
+Za ovu sesiju kreiramo jedan žurnal, sa imenom *journal*, sa različitim tipovima 
+polja: 
+
+* *currency*, tipa currency, 
+* *date*, tipa date, 
+* *integer*, tipa integer, 
+* *lookup*, tipa integer, *lookup_item* je *catalog*, 
+* *lookup_value*, tipa integer, *lookup_value* je catalog.value.
+
+
+Polja dataseta
+==============
+
+Svi tipovi noda osim *reports-a* imaju *fields* atribut - listu objekata koje se koriste
+za reprezentovanje polja dataseta: 
+
+
+.. code-block:: js
+
+  // Da pročitamo listu svih polja dataseta
+  task.journal.fields
+
+  // Da iteriramo polja dataseta 
+  for (var i = 0; i < task.journal.fields.length; i++) {
+    var field = task.journal.fields[i];
+    console.log(field.field_name, field.field_caption);
+  }
+
+  // Drugi način za iteriranje polja dataseta je korišćenje *each_field* metode:
+  task.journal.each_field(function(field) {
+    console.log(field.field_name, field.field_caption);
+  });
+
+  // Ovde su dva polja koja nisu prikazana. 
+  // To su common polja deklarisana u grupi noda. 
+
+
+Pored atributa *field_name*, objekat Field ima: 
+
+* *caption_name* atribut koji se prikazuje korisniku u formi kao labela, 
+* *owner* atribut koji sadrži objekat noda u čijem datasetu je dato polje.
+
+
+.. code-block:: js
+
+  task.journal.date
+  task.journal.date.owner
+  task.journal.date.owner.currency
+  task.journal.date.owner.currency.owner
+
+
+Pristup poljima dataseta noda
+=============================
+
+Za pristup poljima dataseta noda, objekat polja ima sledeće osobine: 
+
+* *data*, 
+* *value*, 
+* *text*, 
+* *lookup_value*, 
+* *lookup_text*, 
+* *display_text*.
+
+.. code-block:: js
+
+  // Da bi podesili vrednost polja tekućeg zapisa koristimo value osobinu:
+  task.journal.date.value
+  task.journal.currency.value
+
+  // Kada čitamo vrednost polja, vrednost je konvertovana u tip polja. 
+  // Za polja tipa integer, float i currency, ako je value polja null, 
+  // vraćena vrednost je 0.
+  // Da dobijemo nekonvertovanu vrednost koristimo data osobinu
+  task.journal.currency.data
+
+  // Da podesimo vrednost polja kao text koristimo text osobinu.
+  task.journal.currency.text
+
+Ovde su dva *lookup* polja: 
+
+* *lookup* i 
+* *lookup_value*. 
+
+*lookup* polje je *master* polje za *lookup_value* polje. 
+
+Ova polja imaju istu vrednost *value* osobine. To je vrednost primarnog ključa, 
+polja *id* u nodu *catalog*, koja je *lookup item* za ova polja.
+
+
+.. code-block:: js
+  
+  // Da pročitamo vrednost lookup polja
+  task.journal.lookup.value
+  task.journal.lookup_value.value
+
+  // Lookup polja imaju lookup_value i lookup_text osobine.
+  task.journal.lookup.lookup_value
+  task.journal.lookup.lookup_text
+  task.journal.lookup_value.lookup_value
+  task.journal.lookup_value.lookup_text
+
+  // Osobina display_text sadrži tekst prikazan korisniku u vizuelnim kontrolama
+  // Za polja date, time, currency i float, tekst prikazan korisniku je određen 
+  // parametrima postavljenim u locale parametru u dijalogu Projects parameters.
+  %d.%m.%Y
+  %Y-%m-%d
+
+.. note::
+  *data* i *display_text* osobine su read-only.
+  
+  Promene *lookup_value* i *lookup_text* osobina se ne smeštaju u bazu podataka.
+
+
+Event hendleri objekta Field
+============================
+
+Nodovi generišu neke evente povezane sa poljima. Event hendlerima koji procesiraju 
+te evente je prosleđen kao parametar objekat polja.
+
+
+*on_field_get_text* event hendler
+---------------------------------
+
+Možete promeniti način kako vizuelna kontrola prikazuje vrednost polja pišući
+*on_field_get_text* hendler. 
+
+
+.. code-block:: js
+
+  function on_field_get_text(field) {
+      if (field.field_name === 'date') {
+          return field.value.toDateString();
+      }
+  }
+
+
+*on_field_changed* event hendler
+--------------------------------
+
+Napišimo *on_field_changed* event hendler da odgovorimo na promene podataka polja.
+
+.. code-block:: js
+
+  function on_field_changed(field, lookup_item) {
+      var item = field.owner;
+      if (field.field_name === 'integer') {
+          item.currency.value = field.value * 1000;
+      }
+  }
+
+.. note::
+  Ovaj event je generisan svaki put kada se vrednost polja promeni. To može dovesti 
+  do beskonačne petlje.
+
+  Na primer:
+
+  .. code-block:: js
+
+    function on_field_changed(field, lookup_item) {
+      if (field.field_name === 'integer') {
+        field.value = field.value + 1;
+      }
+    }
+
+  U ovom slučaju, možete da uradite sledeće da sprečite izvršenje event koda posle 
+  promene vrednosti polja:
+
+  .. code-block:: js
+  
+    function on_field_changed(field, lookup_item) {
+      if (field.field_name === 'integer') {
+        if (!field._calculating) {
+          field._calculating = true;
+          try {
+            field.value = field.value + 1;
+          }
+          finally {
+            field._calculating = false;
+          }
+        }
+      }
+    }
+
+*lookup_item* parametar je specificiran kada korisnik menja lookup polje izborom 
+vrednosti iz *lookup* noda ili korišćenjem *typeahead-a*:
+
+.. code-block:: js
+
+  function on_field_changed(field, lookup_item) {
+    if (lookup_item) {
+      console.log(lookup_item.item_name, lookup_item.id.value);
+    }
+  }
+  
+
+*on_field_validate* event hendler
+---------------------------------
+
+Napišimo *on_field_validate* event hendler da proverimo promenu napravljenu na polju.
+Ovde ćemo pridružiti kod hendleru dinamički:
+
+.. code-block:: js
+  
+  task.journal.on_field_validate = function(field) {
+    if (field.field_name === "integer" && field.value < 0) {
+      return 'Field value must be greater than zero';
+    }
+  }
+
+.. note::
+	Gornji kod može biti smešten bilo gde u jam.py kodu i čak u nekim drugim event 
+	hendlerima. Drugačije rečeno, može uzeti drugačije forme u zavisnosti od vrednosti 
+	nekih eksternih varijabli ili polja.
+
+
+*on_field_select_value* event handler
+-------------------------------------
+
+Napišimo *on_field_select_value* event hendler da sepcificiramo polja koja će biti
+prikazana i postavljeni filteri za lookup nod.
+
+.. code-block:: js
+  
+  function on_field_select_value(field, lookup_item) {
+    if (field.field_name === 'lookup') {
+      lookup_item.view_options.fields = ['value', 'name']
+      lookup_item.set_where({value__range:  [1, 10]});
+    }
+  }
+
+
+Filteri
+-------
+
+Svi nodovi imaju *filters* atribut - listu filter objekata koji se koriste za vizeulno 
+određivanje vrednosti filter parametara.
+
+.. code-block:: js
+
+  // Da iteriramo preko filterske liste:
+  for (var i = 0; i < task.journal.filters.length; i++) {
+      var filter = task.journal.filters[i];
+      console.log(filter.filter_name, filter.filter_caption);
+  }
+
+  // Drugi način iteriranja preko filterske liste j korišćenjem *each_filter* metode:
+  task.journal.each_filter(function(filter) {
+    console.log(filter.filter_name, filter.filter_caption);
+  });
+
+  // Pristup objektu filtera:
+  task.journal.filters.date
+
+  // Da dobijemo ili postavimo vrednost value osobine filtera:
+  task.journal.filters.date.value = new Date()
+  task.journal.open(true)
+
+
+.. note::
+	Nodovi mogu generisati neke evente povezane sa filterima.

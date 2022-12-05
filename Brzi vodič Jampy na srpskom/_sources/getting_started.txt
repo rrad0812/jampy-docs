@@ -1,0 +1,305 @@
+=======
+Početak
+=======
+
+
+Python instalacija
+==================
+
+Jam.py zahteva python. Ako nije već instaliran, možete preuzeti poslednju verziju 
+na `Python <https://www.python.org/downloads/>`_. Nadalje podrazumevamo da radimo 
+sa verzijom 3.7 Python interpretera.
+
+
+Virtuelni enviroment
+--------------------
+
+U radnom direktorijumu treba da kreiramo virtuelni enviroment:
+
+.. code-block:: console
+  
+  > mkdir myenv
+  > cd my myenv
+  > py -3.7 -m venv .
+  
+Sada, aktiviramo virtuelni enviroment:
+
+.. code-block:: console
+
+  > Scripts\activate.bat
+
+
+Jam.py instalacija
+==================
+
+Sada, instaliramo Jam.py paket:
+
+.. code-block:: console
+
+  (myenv) > pip install jam.py
+
+
+Kreiranje novog Jam.py projekta
+===============================
+
+Želimo da kreiramo jednostavnu CRM aplikaciju. 
+
+Prvo kreiramo direktorijum za novi projekat, i u tom direktorijumu pokrećemo
+*jam-project.py* skript da kreiramo projektnu strukturu:
+
+.. code-block:: console
+
+  (myenv) > mkdir crm
+  (myenv) > cd crm
+  (myenv) > python ..\jam\bin\jam-project.py
+
+
+Potom pokrećemo *server.py* skript koji je kreirao *jam-project.py*.
+
+.. code-block:: console
+
+  (myenv) > python server.py
+
+Za kompletiranje kreiranja projekta u browser-u startujemo *AppBuilder*:
+
+.. code-block:: console
+
+  http://localhost:8080/builder.html
+
+* Prvo biramo *language* projekta, 
+* Posle toga pojaviće se dijalog *Projects parameters*. Sada podešavamo 
+  
+  * *Caption* i 
+  * *Name* projekta.
+  * | Biramo *SQLITE* za bazu podataka. 
+    | Dajemo ime fajlu *crm.sqlite*.
+    
+Sada samo kompletirali kreiranje projekta. 
+
+
+Kućna strana aplikacije
+=======================
+
+Idemo na kućnu stranu aplikacije 
+
+.. code-block:: console
+
+  http://localhost:8080/
+
+i osvežimo je ( F5 ).
+
+Ovde je samo prazan meni. 
+
+
+Kreiranje noda u grupi *Catalogs*
+==================================
+
+* Idemo nazad na stranu AppBuilder-a.
+
+* Idemo u grupu *Catalogs* i kreiramo *Customers* nod.
+
+* Podešavamo njegove atribute: 
+
+  * *Caption* - naslov koji vidi korisnik 
+  * *Name* - ime koje se koristi u kodu
+  * *Database table name* - ime tabele u bazi podataka
+
+* I dodajemo tri polja tipa *text*: 
+    
+  * *Firstname*, 
+  * *Lastname* i 
+  * *Phone*.
+
+  Kao što vidite, kada sačuvamo *Customers* nod, server kreira odgovarajuću 
+  tabelu u projektnoj bazi podataka.
+
+* Idemo na kućnu stranu aplikacije i osvežimo je. 
+
+* Posle toga, na appbuilder strani, otvorimo *Customers* katalog ponovo i za polje 
+  Lastname podesimo:
+  
+  * *required* atribut,
+  * *default* atribut
+  
+  Za nodove katalog grupe, čiji je *default* atibut podešen, podrazumevani kod 
+  kreira funkcionalnost pretrage.
+
+
+Dodajmo nekog korisnika
+-----------------------
+
+John
+
+Gordon
+
+999-111-2222
+
+
+Kreiranje noda u grupi *Journals*
+===================================
+
+Sada kreirajmo u grupi *Journals* *Contacts* nod, i njegova polja:
+
+* Date, polje tip *datetime*, 
+
+* Customer, polje tip *lookup*, koje će sadržati referencu na zapis u *Customers* tabeli,
+
+* Firstname i Phone, polja tip *lookup*, ali za ova polja podešavamo polje Customer 
+  kao *master_field* atribut. U ovom slučaju Jam.py neće kreirati polja u *Contacts* tabeli.
+
+* Notes, polje tipa *text*, *lenght* = 100
+
+* Otvorimo *Contacts* nod na kućnoj strani aplikacije.
+
+
+Kreiranje *lookup liste*
+------------------------
+
+Radi lakšeg rada, duplirajmo AppBuilder stranu, izaberimo Task i kreirajmo *lookup listu* 
+sa nazivom *Status*, sa sledećim parovima: 
+  
+* 1: Contact
+* 2: Meeting
+* 3: Proposal
+* 4: Close
+
+
+Kreiranje noda u grupi *Journals* - nastavak
+----------------------------------------------
+
+* Otvorimo *Contacts* nod ponovo i dodajmo polje tipa *lookup* Status podešavanjem 
+  njegove lookup liste.
+
+* Podesimo atribute polja *Customer*: 
+  
+  * *Required*
+  * *Typeahead*
+
+
+Dodajmo malo koda
+-----------------
+
+Napišimo *on_after_append* event hendler, koji će biti pokrenut kada je novi zapis 
+dodat u *Contacts* journal.
+
+.. code-block:: js
+
+  function on_after_append(item) {
+    item.date.value = new Date();
+    item.status.value = 1;
+  }
+
+i podesimo:
+
+* Polje Date na tekući datum i 
+* Polje Status na *Contact* lookup vrednost.
+
+Napišimo *on_field_get_text* event hendler
+
+.. code-block:: js
+
+  function on_field_get_text(field) {
+    if (field.field_name === 'customer' && field.value) {
+      return field.owner.firstname.lookup_value + ' ' + field.lookup_value;
+    }
+  }
+
+koji će prikazati u polju Customer korisničko firstname i lastname.
+
+
+Podešavanje *view* i *edit* forme
+---------------------------------
+
+Sada promenimo redosled prikaza polja kada pregledamo journal, i kada ga editujemo.  
+To radimo u AppBuilder-u klikom na *View form* i *Edit form* dugmad.
+
+Hajde da promeimo podrazumevani kod. Obrišimo dinamički meni, kreiran u *on_page_loaded* 
+event hendleru i umesto toga otvorimo *view* formu *Contacts* journal-a.
+
+.. code-block:: js
+
+  task.contacts.view($('#content'));
+
+Za *Journals* podrazumevani kod dozvoljava korišćenje filtera. Kreirajmo filtere 
+za polja journala-a.
+
+Za demonstraciju filtera dodajmo još jednog korisnika:
+
+Kathy
+
+Chase
+
+111-22-3333
+
+
+Demonstracija rada sa html šablonima
+====================================
+
+Podrazumevano, html šablon sa klasom *default-view* se koristi za kreiranje *view*
+forme za sve journale i catalog-e, za koje njihov sopstveni *view* šablon nije 
+definisan.
+
+Hajde da kreiramo jedan *view* šablon forme za *Contacts* journal, kopiranjem
+postojećeg *default-view* šablona. Definišimo njegovu klasu sa *contacts-view*. 
+Dodajmo *Customers* button.
+
+.. code-block:: html
+
+    <div class="contacts-view">
+        <div class="form-body">
+            <div class="view-table"></div>
+            <div class="view-detail"></div>
+        </div>
+        <div class="form-footer">
+            <button id="delete-btn" class="btn expanded-btn pull-left" type="button">
+                <i class="icon-trash"></i> Delete<small class="muted">&nbsp;[Ctrl+Del]</small>
+            </button>
+            <div id="report-btn" class="btn-group dropup">
+                <a class="btn expanded-btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="icon-print"></i> Reports
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu bottom-up">
+                </ul>
+            </div>
+            <button id="customers-btn" class="btn expanded-btn" type="button">
+                Customers
+            </button>
+            <button id="edit-btn" class="btn expanded-btn" type="button">
+                <i class="icon-edit"></i> Edit
+            </button>
+            <button id="new-btn" class="btn expanded-btn" type="button">
+                <i class="icon-plus"></i> New <small class="muted">&nbsp;[Ctrl+Ins]</small>
+            </button>
+        </div>
+    </div>
+
+Sada napišimo event hendler za *on_view_form_created* event.
+
+.. code-block:: js
+
+  function on_view_form_created(item) {
+      item.view_form.find('#customers-btn').click(function() {
+          task.customers.view();
+      });
+  }
+
+Dakle, klik na *Customers* dugme će otvoriti *view* formu za *Customers* item.
+
+Možemo definisati poredak prikaza *Contact* journal zapisa i kreirati odgovarajući 
+indeks za bazu podataka.
+
+Sada možemo otvoriti *project.css* fajl i promeniti izgled aplikacije korišćenjem css-a.
+
+
+.. code-block:: js
+
+  .dbtable {
+    border: 2px solid blue;
+    border-radius: 6px;
+  }
+  
+  .dbtable td.customers {
+    color: black;
+    font-weight: bold;
+  }

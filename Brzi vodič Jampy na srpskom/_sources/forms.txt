@@ -1,0 +1,279 @@
+=====
+Forme
+=====
+
+Postoje četiri tipa formi: 
+
+* *view* forme, 
+* *edit* forme, 
+* *filter* forme, 
+* *param* forme.
+
+Ovi atributi noda su JQuery objekti:
+
+.. code-block:: js
+
+  > task.invoices.view_form
+  > task.invoices.edit_form
+  > task.invoices.filter_form
+  > task.purchases_report.param_form
+
+Možete koristiti JQuery da pristupite bilo kom JQuery objektu u formi
+
+.. code-block:: js
+
+  > // Pronađi i sakrij new dugme na invoices view formi
+  > task.invoices.view_form.find('#new-btn').hide()
+
+  > // Nađi ok dugme na invoices edit formi
+  > task.invoices.edit_form.find('#ok-btn')
+
+  > // Nađi taxrate input liniju i promeni boju
+  > task.invoices.edit$('input.taxrate').css('color', 'red')
+
+  > // Pronađi tax input liniju i promeni boju
+  > task.invoices.edit_form.find('.dbtable td.tax').css('color', 'red')
+
+Možete pridružiti jQuery evente dugmadima ili drugim elemntima forme.
+To se obično radi u form eventima.
+
+
+Jam.py šabloni
+==============
+
+Jam.py forme su zasnovane na html šablonima. Ovi šabloni su definisani u *index.html* 
+fajlu, u div-u sa klasom "templates". Kada je task učitan on odseca ovaj div i 
+smešta ga u *templates* atribut task objekta.
+
+.. code-block:: js
+
+  > task.templates
+
+Forme su kreirane korišćenjem *create_type_form* metode, gde je *type* tip forme.
+Ove metode se koriste interno od strane: *view*, *insert_record*, *append_record*, 
+*edit_record* metoda.
+
+Aplikacija čita šablone formi iz *templates* atributa task objekta, i ako je 
+*container* parametar prosleđen, insertuje šablon u kontejner, inače modalna forma 
+je kreirana i šablon je insertovan u nju.
+
+Aplikacija prvo traži šablon sa *formname-type* klasom, gde *formname* je *item_name* 
+atribut forme, i *type* je tip forme.
+
+.. note::
+	Primer klase forminog šablona: *customers-view*
+
+Ako šablon nije nađen, aplikacija traži vlasnikov šablon, i na kraju default šablon.
+
+Nodovi imaju *type_options* atribute, gde je *type* tip forme, koji specificiraju 
+atribute forme za kreiranje. 
+
+.. code-block:: js
+
+  > task.invoices.view_options
+  {title: "Invoices", fields: Array(9), form_header: true, form_border: true, close_button: true,...}
+
+  > task.invoices.edit_options
+  {title: "Invoices", fields: Array(0), form_header: true, form_border: true, close_button: true,...}
+
+
+Eventi forme
+============
+
+Prvi event pokrenut na klijentu pošto je task učitan, je *on_page_loaded* event. 
+U Demo aplikaciji ovaj event se koristi za kreiranje dinamičkog menija, baziranog 
+na task stablu. Za svaki vidljiv nod, klik na meni će pokrenuti JQuery event 
+za *view* ili *print* nodove.
+
+Radi praćenja izvršavanja, postavili smo prekidnu tačku u izvorni kod klijent 
+modula, u *on_view_form_created* event hendler *Customers* noda. [1]_:
+
+.. image:: _images/on_view_form_created.png
+    :align: center
+    :alt: The on_view_form_created event handler of the Customer item on the breakpoint
+
+Da bi razumeli poredak eventa [2]_, pogledajmo na stek funkcijskih poziva:
+
+.. image:: _images/call_stack.png
+    :align: center
+    :alt: The call stack on the breakpoint
+
+Očigledno *on_view_form_created* event hendler je pozvan od *_process_event* 
+funkcije. Ova funkcija poziva tri *on_view_form_created* event hendlera: 
+
+* Jedan za task objekat, ako je definisan u task klijent modulu, 
+* Drugi za objekat vlasnika noda, ako je definisan u klijent modulu grupe,
+* i na kraju za nod, ako je definisana u klijent modulu noda,
+
+.. code-block:: js
+  
+  // Part of the _process_event function code
+  
+  if (this.task[event]) {
+    if (this.task[event].call(this, this)) return;
+  }
+  
+  if (!this.master && this.owner[event]) {
+    if (this.owner[event].call(this, this)) return;
+  }
+  if (this[event]) {
+    if (this[event].call(this, this)) return;
+  }
+
+prateći strukturu task stabla. 
+
+Dakle možete smestiti vaš kod u
+
+* *task klijent modul*, i on će se primeniti na sve module, kao što autor Jam.py radi, 
+* *klijent modul grupe*, tako da se kod primeni na sve nodove grupe, 
+* *klijent modul noda*, i on će biti primenjen samo za dati nod. 
+
+Na taj način, eventi su generisani za date tipove formi, sa izuzetkom *close_query* 
+eventa, koji su pokrenuti u obrnutom redosledu.
+
+
+Kontrole svesne podataka
+========================
+
+Kreiranje tabelarnog prikaza podataka
+-------------------------------------
+
+Očistimo div sa id = 'content' i dodajmo mu div sa id = 'table'.
+
+.. code-block:: js
+
+  $('#content').empty()
+  $('#content').append($("<div id='table'>"))
+
+Kreirajmo kopiju *Customers* noda, pozovimo *create_table* metodu i popunimo sa 
+podacima, pozivajući *open* metodu.
+
+.. code-block:: js
+
+  c = task.customers.copy()
+  c.create_table($('#table'))
+  c.open()
+
+
+Paginacija
+----------
+
+Zatvorimo kopiju *Customer* noda i postavimo atribut *paginate* na *true*.
+
+.. code-block:: js
+
+  c.close()
+  c.paginate = true
+
+Kada je ovaj atribut postavljen, *create_table* metoda izračunava broj vrsta za 
+datu visinu tabele (podrzumevano: 480 pixels) i kreira kontrolu paginacije.
+
+.. code-block:: js
+
+  c.create_table($('#table'))
+
+*open* metoda vraća sa servera broj zapisa izračunat gornjom funkcijom:
+
+.. code-block:: js
+
+  c.open()
+
+Sada tabela učitava zapise sa servera po potrebi.
+
+
+Filtriranje podataka
+--------------------
+
+Prikažimo zapise korisnika iz Nemačke:
+
+.. code-block:: js
+
+  c.set_where({country: 'Germany'})
+  c.open()
+
+Sada prikažimo sve korisnike:
+
+.. code-block:: js
+
+  c.open()
+
+
+Promena izgleda tabele
+----------------------
+
+*create_table* metod ima više opcija. Promenimo, na primer, prikazana polja i visinu 
+tabele.
+
+.. code-block:: js
+
+  c.create_table($('#table'), {fields: ['firstname', 'lastname'], height: 600})
+  c.open()
+
+
+Kreiranje ulaznih elemenata 
+---------------------------
+
+Kreirajmo tabelu za prikaz podataka i otvorimo dataset:
+
+.. code-block:: js
+
+  c.create_table($('#table'))
+  c.open()
+
+
+Kreiranje edit forme
+--------------------
+
+Sada ćemo demonstrirati *create_input* metodu i, da uradimo to, dodaćemo div sa 
+id = 'fields' u div sa id = 'content':
+
+.. code-block:: js
+
+  $('#content').append($("<div id='fields'>"))
+
+  c.create_inputs($('#fields'))
+  c.create_inputs($('#fields'), {col_count: 2})
+  c.create_inputs($('#fields'), {fields: ['firstname', 'lastname'], col_count: 2})
+  c.create_inputs($('#fields'), {col_count: 2, label_on_top: true})
+  c.create_inputs($('#fields'), {col_count: 3})
+  c.create_inputs($('#fields'), {col_count: 3, label_width: 90})
+
+
+Za kompletiranje ovog demo-a, omogućimo da korisnik edituje zapise *Customers* noda.
+
+.. code-block:: js
+
+  c.on_after_scroll = function(item) {
+    if (item.record_count()) 
+      item.edit();
+  }
+
+
+Zapisi su promenjeni na klijentu, ali promene nisu sačuvane u bazi podataka. Da
+sačuvamo promene, napišimo još jedan event hendler:
+
+
+.. code-block:: js
+
+  c.on_before_scroll = function(item) { 
+    item.apply();
+  }
+
+.. note::
+
+ Koristimo kopiju customers noda da sprečimo promenu ponašanje originala customers 
+ noda, event hendleri koji su dodati su asocirani samo sa kopijom noda.
+
+Postoje još dve metode: *create_filter_inputs* i *create_param_inputs*. Oni rade 
+kao *create_inputs*, ali oni se koriste za editovanje filterskih vrednosti podataka
+i vrednosti parametara izveštaja stvki..
+
+
+.. rubric:: **Footnotes**
+
+.. [1] Kod Jam.py okvira je imao više promena od vremena nastanka ovog zapisa.
+       Dakle prikazaćemo suštinu na malo drugačiji način.
+
+.. [2] Hijerarhijsko procesiranje eventa je ono što razlikuje Jam.py, kao i maloj 
+       veličini dodatog koda i nekoj vrsti nasleđenog ponašanja.
+

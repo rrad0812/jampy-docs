@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Working with data on the server &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fields and filters" href="fields_filters.html" />
+    <link rel="prev" title="Datasets 2" href="datasets2.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="../contents.html">Table of contents</a>
+                    </li>
+                    
+                    <li>
+                        <a href="datasets2.html">Prev</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="fields_filters.html">Next</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <h4 class="doc-title text-center"><a href="http://jam-py.com/docs/">Jam.py documentation</a></h4>
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <div class="section" id="working-with-data-on-the-server">
+<h1>Working with data on the server<a class="headerlink" href="#working-with-data-on-the-server" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="call-server-javascript-function">
+<h2>Call <em>server</em> javascript function<a class="headerlink" href="#call-server-javascript-function" title="Permalink to this headline">¶</a></h2>
+<p>Let’s defined the delete_all function on the server</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delete_all</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">eof</span><span class="p">():</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>And execute it using the server method. After the execution, we call the open method
+to display the changes.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;delete_all&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Functions on the server can be executed in parallel threads. Always create
+copies of items when working with datasets.</p>
+</div>
+<p>Let’s we defined the function for add records to the table:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_records</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">();</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">();</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;add_records&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">],</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Now we defined the function for change records:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">change</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span> <span class="o">+=</span> <span class="n">delta</span><span class="p">;</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">post</span><span class="p">();</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1000</span><span class="p">],</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>As you can see, the methods of working with datasets on the server are the same
+as those on the client.</p>
+<p>You can pass the options dictionary to the open method in the same way as on
+the client.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">list_records</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">open</span><span class="p">({</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value__ge&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">},</span> <span class="s1">&#39;order_by&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">]})</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;list_records&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or pass these parameters as keyword arguments:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">list_records</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">copy</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;value__ge&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">},</span> <span class="n">order_by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;list_records&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The same is for the <em>set_where</em>, <em>set_fields</em>, <em>set_order_by</em> methods.For example,
+the the result of the execution of following pairs of functions is the same:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">item</span><span class="o">.</span><span class="n">set_where</span><span class="p">({</span><span class="s1">&#39;value__ge&#39;</span><span class="p">:</span> <span class="mi">1090</span><span class="p">,</span> <span class="s1">&#39;date__gt&#39;</span><span class="p">:</span> <span class="n">now</span><span class="p">})</span>
+<span class="n">item</span><span class="o">.</span><span class="n">set_where</span><span class="p">(</span><span class="n">value__ge</span><span class="o">=</span><span class="mi">1090</span><span class="p">,</span> <span class="n">date__gt</span><span class="o">=</span><span class="n">now</span><span class="p">)</span>
+
+<span class="n">copy</span><span class="o">.</span><span class="n">set_fields</span><span class="p">([</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="n">copy</span><span class="o">.</span><span class="n">set_fields</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+<span class="n">copy</span><span class="o">.</span><span class="n">set_order_by</span><span class="p">([</span><span class="s1">&#39;-value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="n">copy</span><span class="o">.</span><span class="n">set_order_by</span><span class="p">(</span><span class="s1">&#39;-value&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="call-execute-methods-of-the-task-module">
+<h2>Call execute methods of the task module<a class="headerlink" href="#call-execute-methods-of-the-task-module" title="Permalink to this headline">¶</a></h2>
+<p>Another way to work with database data is to use the <em>execute</em> and <em>execute_select</em>
+methods of the task. These methods use the application connection pool. We will
+also use the <em>table_name</em> attribute of the item.</p>
+<p>Use the <em>execute_select</em> method to execute the sql select query. This method returns
+a list of records:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pool_execute_select</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute_select</span><span class="p">(</span><span class="s1">&#39;select name, value from </span><span class="si">%s</span><span class="s1"> where deleted = 0&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="n">r</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;pool_execute_select&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the catalog item, the value of the ‘Soft Delete’ attribute is set to true,
+which means that the delete method does not remove the record from the table,
+but uses the deleted field to mark the record as deleted. The item’s open method
+takes this into account, in all other cases you must add  this condition:
+deleted = 0.</p>
+</div>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pool_execute_select</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute_select</span><span class="p">(</span><span class="s1">&#39;select count(*) from </span><span class="si">%s</span><span class="s1"> where deleted = 0&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s1">&#39;not deleted&#39;</span><span class="p">,</span> <span class="n">res</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute_select</span><span class="p">(</span><span class="s1">&#39;select count(*) from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">res</span>
+</pre></div>
+</div>
+<p>Let’s empty the catalog table and add 10 records using the <em>execute</em> method of the task</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pool_execute</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">delete_sql</span> <span class="o">=</span> <span class="s1">&#39;delete from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span>
+    <span class="n">add_sql</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">add_sql</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;insert into </span><span class="si">%s</span><span class="s2"> (value, name, deleted) values (</span><span class="si">%d</span><span class="s2">, &#39;</span><span class="si">%s</span><span class="s2">&#39;, 0)&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">execute</span><span class="p">([</span><span class="n">delete_sql</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_sql</span><span class="p">)</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;pool_execute&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The parameter of the execute methods can be a query string, a list of query strings,
+a list of lists and so on.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All queries are executed in one transaction and if execution succeeds the commit
+command is called, otherwise rollback command is executed.</p>
+</div>
+<p>Third way to read or write database data is to create a connection using
+the <em>create_connection</em> method of the task or using the sqlite3 connect function
+(for a SQLITE database)</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">use_connection</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">create_connection</span><span class="p">()</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;delete from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into </span><span class="si">%s</span><span class="s2"> (value, name, deleted) values (</span><span class="si">%d</span><span class="s2">, &#39;</span><span class="si">%s</span><span class="s2">&#39;, 0)&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;use_connection&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="k">def</span> <span class="nf">sqlite3_connection</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;ds.sqlite&#39;</span><span class="p">)</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;delete from </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into </span><span class="si">%s</span><span class="s2"> (value, name, deleted) values (</span><span class="si">%d</span><span class="s2">, &#39;</span><span class="si">%s</span><span class="s2">&#39;, 0)&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Record </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">server</span><span class="p">(</span><span class="s1">&#39;sqlite3_connection&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">task</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not forget to close the connection.</p>
+</div>
+</div>
+</div>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../contents.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Working with data on the server</a><ul>
+<li><a class="reference internal" href="#call-server-javascript-function">Call <em>server</em> javascript function</a></li>
+<li><a class="reference internal" href="#call-execute-methods-of-the-task-module">Call execute methods of the task module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="datasets2.html"
+                        title="previous chapter">Datasets 2</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fields_filters.html"
+                        title="next chapter">Fields and filters</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/transcribed/datasets3.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Copyright &copy; <a href="http://yushev.ru/en/index.html">Andrew Yushev</a> 2015-2018
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

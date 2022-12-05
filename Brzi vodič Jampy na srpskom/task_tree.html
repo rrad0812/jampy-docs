@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Task stablo &#8212; Jam.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Forme" href="forms.html" />
+    <link rel="prev" title="Početak" href="getting_started.html" />
+
+
+
+ 
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $("#doc-layout").css("min-height", $(window).height() - 121);
+        $(window).resize(function() {
+            $("#doc-layout").css("min-height", $(window).height() - 121);
+        });
+        $('a.reference, a.internal').on('click', function(e){
+            var target = this.hash,
+                element;
+            if (target[0] === "#") {
+                e.preventDefault();
+                element = $('a[href=' + target + ']');
+                $('html, body').animate({
+                    scrollTop: element.offset().top - 60
+                }, 500);
+            }
+        });
+    });
+</script>
+
+
+
+  </head><body>
+
+    <div class="document">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    
+                    <span class="icon-bar"></span>
+                    
+                    
+                    <span class="icon-bar"></span>
+                    
+                </button>
+                <a class="navbar-brand" href="http://jam-py.com/">Jam.py framework</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="http://jam-py.com/"></a>
+                    </li>
+                    <li>
+                        <a href="contents.html">Sadržaj</a>
+                    </li>
+                    
+                    <li>
+                        <a href="getting_started.html">Pret</a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a href="forms.html">Sled</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="doc-layout" class="container">
+        <div id="doc-content" class="row">
+            <div id="doc-body" class="col-md-9">
+<!--
+            
+            <div id="doc-body" class="col-md-9">
+            
+-->
+                
+  <section id="task-stablo">
+<h1>Task stablo<a class="headerlink" href="#task-stablo" title="Permalink to this heading">¶</a></h1>
+<p>Jam.py serverska aplikacija kreira jedan server task, koji sadrži task stablo,
+zasnovano na informacijama u <em>admin.sqlite</em> bazi podataka, koja sadrži projektnu
+strukturu i kod kreiran u AppBuilder-u.</p>
+<section id="klijent-task">
+<h2>Klijent task<a class="headerlink" href="#klijent-task" title="Permalink to this heading">¶</a></h2>
+<p>Kada browser učita jam.js on kreira jedan prazan klijent task objekat. Pošto je
+dokument učitan klijent task učitava samog sebe iz server task objekta.</p>
+<p>Ako pokrenemo Demo aplikaciju i otvorimo browser web konzolu, i unesemo:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task</span>
+<span class="go">&gt; Task {owner: undefined, item_name: &#39;demo&#39;, item_caption: &#39;Jam.py demo&#39;, visible: null, ID: 1, ...}</span>
+</pre></div>
+</div>
+<p>Task, na klijentu, je gobalni objekat i raspoloživ je usvim klijentski modulima.
+On reprezentuje jedno stablo. Svaki nod stabla može sadržati druge noda:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task.items</span>
+
+<span class="go">  (6) [Group, Group, Group, Group, Group, Group]</span>
+<span class="go">  0: Group {owner: Task, item_name: &#39;journals&#39;, item_caption: &#39;Journals&#39;, visible: true, ID: 3, ...}</span>
+<span class="go">  1: Group {owner: Task, item_name: &#39;catalogs&#39;, item_caption: &#39;Catalogs&#39;, visible: true, ID: 2, ...}</span>
+<span class="go">  2: Group {owner: Task, item_name: &#39;details&#39;, item_caption: &#39;Details&#39;, visible: false, ID: 4, ...}</span>
+<span class="go">  3: Group {owner: Task, item_name: &#39;reports&#39;, item_caption: &#39;Reports&#39;, visible: true, ID: 5, ...}</span>
+<span class="go">  4: Group {owner: Task, item_name: &#39;analytics&#39;, item_caption: &#39;Analytics&#39;, visible: true, ID: 23, ...}</span>
+<span class="go">  5: Group {owner: Task, item_name: &#39;system&#39;, item_caption: &#39;System&#39;, visible: false, ID: 26, ...}</span>
+<span class="go">  length: 6</span>
+<span class="go">  __proto__: Array(0)</span>
+</pre></div>
+</div>
+<p>i tako dalje rekurzivno:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task.items[1].items</span>
+
+<span class="go">  (6) [Item, Item, Item, Item, Item, Item]</span>
+<span class="go">  0: Item {owner: Group, item_name: &#39;customers&#39;, item_caption: &#39;Customers&#39;, visible: true, ID: 10, ...}</span>
+<span class="go">  1: Item {owner: Group, item_name: &#39;tracks&#39;, item_caption: &#39;Tracks&#39;, visible: true, ID: 15, ...}</span>
+<span class="go">  2: Item {owner: Group, item_name: &#39;albums&#39;, item_caption: &#39;Albums&#39;, visible: true, ID: 12, ...}</span>
+<span class="go">  3: Item {owner: Group, item_name: &#39;artists&#39;, item_caption: &#39;Artists&#39;, visible: true, ID: 11, ...}</span>
+<span class="go">  4: Item {owner: Group, item_name: &#39;genres&#39;, item_caption: &#39;Genres&#39;, visible: true, ID: 13, ...}</span>
+<span class="go">  5: Item {owner: Group, item_name: &#39;mail&#39;, item_caption: &#39;Mail&#39;, visible: false, ID: 25, ...}</span>
+<span class="go">  length: 6</span>
+<span class="go">  __proto__: Array(0)</span>
+</pre></div>
+</div>
+<p>Svi nodovi su nasleđeni iz klase - zajedničkog pretka - AbstractItem.</p>
+<p>Svaki nod je atribut njenog vlasnika.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task</span>
+<span class="go">Task {owner: undefined, item_name: &quot;demo&quot;, item_caption: &quot;Jam.py demo&quot;, visible: null, ID: 1, ...}</span>
+
+<span class="go">&gt; task.catalogs</span>
+<span class="go">Group {owner: Task, item_name: &quot;catalogs&quot;, item_caption: &quot;Catalogs&quot;, visible: true, ID: 2, ...}</span>
+
+<span class="go">&gt; task.catalogs.customers</span>
+<span class="go">Item {owner: Group, item_name: &quot;customers&quot;, item_caption: &quot;Customers&quot;, visible: true, ID: 10, ...}</span>
+</pre></div>
+</div>
+<p>Nodovi kojima su vlasnici grupe su takođe atributi taska - zbog toga one moraju
+imati jedinstvena imena.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task.customers</span>
+<span class="go">Item {owner: Group, item_name: &quot;customers&quot;, item_caption: &quot;Customers&quot;, visible: true, ID: 10, ...}</span>
+</pre></div>
+</div>
+<p>Da bi dobili vlasnika noda, koristite njegov <em>owner</em> atribut.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task.customers.owner</span>
+<span class="go">Group {owner: Task, item_name: &quot;catalogs&quot;, item_caption: &quot;Catalogs&quot;, visible: true, ID: 2, ...}</span>
+
+<span class="go">&gt; task.catalogs.owner</span>
+<span class="go">Task {owner: undefined, item_name: &quot;demo&quot;, item_caption: &quot;Jam.py demo&quot;, visible: null, ID: 1, ...}</span>
+</pre></div>
+</div>
+<p>Da bi dobili task kome pripada nod, koristite njen <em>task</em> atribut:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task.customers.task</span>
+<span class="go">Task {owner: undefined, item_name: &quot;demo&quot;, item_caption: &quot;Jam.py demo&quot;, visible: null, ID: 1, ...}</span>
+
+<span class="go">&gt; task.journals.task</span>
+<span class="go">Task {owner: undefined, item_name: &quot;demo&quot;, item_caption: &quot;Jam.py demo&quot;, visible: null, ID: 1, ...}</span>
+</pre></div>
+</div>
+<p>Svaki nod stabla ima više atributa i metoda.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; task.customers.view()            // Modal customer view form is start up.</span>
+</pre></div>
+</div>
+</section>
+<section id="server-task">
+<h2>Server task<a class="headerlink" href="#server-task" title="Permalink to this heading">¶</a></h2>
+<p>Hajde da demonstriramo task na serveru. <em>on_created event</em> je pokrenut kada je
+task stablo kreirno, ili ponovo izgrađeno ako je bilo menjano.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">item_name</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">task</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">item_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;    &#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">item_name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">detail</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;      &#39;</span><span class="p">,</span> <span class="n">detail</span><span class="o">.</span><span class="n">item_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Rezultat možemo videti na serverskoj konzoli:</p>
+<img alt="Demonstrate the server task" class="align-center" src="_images/on_created.png" />
+<p>Task nije globalni objekat u server modulu noda. Ali obično se prosleđuje kao
+parametar funkcijama i event hendlerima modula noda, i znajući to možemo pristupti
+bilo kojoj drugoj stavci stabla.</p>
+<p>Dodatno, moguće je kreirati kopiju noda pridružene db tabelama.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">cust_b</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">customers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">cust_b</span><span class="o">.</span><span class="n">set_where</span><span class="p">({</span><span class="n">last_name__startwith</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">})</span>
+<span class="n">cust_b</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Ove kopije nisu uključene u task stablo i biće obrisane kada se više ne koriste,
+ali vi uvek možete kreirati task atribut koji referencira na njih i sprečiti neželjeno
+brisanje.</p>
+</section>
+<section id="jam-py-radni-tok">
+<h2>Jam.py radni tok<a class="headerlink" href="#jam-py-radni-tok" title="Permalink to this heading">¶</a></h2>
+<p>Na slici ispod je prikazan Jam.py workflow grafički.</p>
+<img alt="Jam.py workflow" class="align-center" src="_images/jampy-workflow.png" />
+</section>
+</section>
+
+
+            </div>
+            
+            <div id="doc-sidebar" class="col-md-3" >
+            
+                
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Task stablo</a><ul>
+<li><a class="reference internal" href="#klijent-task">Klijent task</a></li>
+<li><a class="reference internal" href="#server-task">Server task</a></li>
+<li><a class="reference internal" href="#jam-py-radni-tok">Jam.py radni tok</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="getting_started.html"
+                          title="previous chapter">Početak</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="forms.html"
+                          title="next chapter">Forme</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/task_tree.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+            
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="ftext col-md-4 col-sm-6 col-xs-12">
+                    Priredio <b>Radosav Radovanović</b> oktobar 2022.
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://github.com/jam-py/jam-py">GitHub</a>
+                </div>
+                <div class="ftext col-md-3 col-sm-6 col-xs-12">
+                    <a href="https://groups.google.com/forum/#!forum/jam-py">Jam.py Users Mailing List</a>
+                </div>
+                <div class="ftext col-md-2 col-sm-6 col-xs-12">
+                    <a href="https://www.facebook.com/groups/jam.py/">Facebook</a>
+                </div>
+                <div class="ftext col-md-1 col-sm-6 col-xs-12">
+                    <a href="https://twitter.com/jampy_framework">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,213 @@
+
+===========================
+Asinhroni i sinhroni pozivi
+===========================
+
+Kreirajmo kopiju noda *catalog* i napravimo tabelu za prikazivanje  
+podataka.
+
+.. code-block:: js
+
+  c = task.catalog.copy()
+  c.create_table($('#content'), {height: 820})
+  c.open(true)
+
+
+*open* i *apply* metode mogu imati *callback* i *async* parametre. Ako je *callback* 
+funkcija prosleđena kao parametar ili je async parametar *true*, zahtev se
+izvršava asinhrono. 
+
+Pošto je dataset primljen, izvršava se *callback* funkcija ako je definisana.
+
+
+.. code-block:: js
+
+  // Asinhroni poziv open metod sa definisanim callback parametrom
+  c.open( function() { 
+    c.warning(c.record_count()) 
+  } )
+
+  // Asinhroni poziv open funkcije sa parametrom true
+  c.open(true)
+
+  // Sinhroni poziv open metotde
+  c.open()
+
+
+*open* metoda
+=============
+
+Može imati sledeće parametre: 
+
+* *options*, 
+* *callback*, 
+* *async*.
+
+*Options* parametar je objekat koji može imati sledeće atribute:
+
+* *expanded*, 
+* *fields*, 
+* *where*, 
+* *order_by*, 
+* *open_empty*, 
+* *funcs*, 
+* *group_by*, 
+* *limit*, 
+* *offset*.
+
+
+.. code-block:: js
+
+  options = {
+      where: {value__range: [10, 20]},
+      fields: ['name', 'value'],
+      order_by: ['-value']
+  }
+  
+  callback = function(item) {
+      item.warning('Total records: ' + item.record_count())
+  }
+  
+  c.open(options, callback)
+
+
+Poredak parametara nije bitan. Neki parametri mogu biti izostavljeni!
+Evo demonstracije *func* parametra:
+
+
+.. code-block:: js
+
+  c.open(
+      {
+          where: {value__range: [10, 20]},
+          fields: ['value'],
+          funcs: {value: 'sum'}
+      },
+      true
+  )
+
+
+Pomoćne metode
+--------------
+
+Pogledajmo pomoćne metode: 
+
+* *set_where*, 
+* *set_fields*, 
+* *set_order_by*. 
+
+Pozivanje ovih metoda pre poziva *open* metode je slično specificiranju odgovarajućeg
+parametra:
+
+
+.. code-block:: js
+
+  c.open({
+      where: {value__range: [10, 20]},
+      fields: ['name', 'value'],
+      order_by: ['-value']
+    },
+    callback
+  )
+
+
+Ovo je isto kao:
+
+
+.. code-block:: js
+
+  c.set_where( {value__range: [10, 20]} )
+  c.set_fields( ['name', 'value'] )
+  c.set_order_by( ['-value'] )
+  c.open(callback)
+
+
+Posle poziva *open* metoda, uticaj ovih metoda prestaje.
+
+
+.. code-block:: js
+
+  // Poziv open metoda će vratiti kompletan dataset,
+  // bez uticaja prethodno pozvanih pomoćnih metoda
+  c.open(true)
+
+
+Takođe, pomoćne metode se mogu koristiti u nekim specifičnim situacijama,na primer 
+za postavljanje uslova filteriranja pre poziva view metode, koja poziva *open*
+metod u *on_view_form_created* event hendleru.
+
+
+.. code-block:: js
+
+  task.catalog.set_where( {value__range: [10, 60]} )
+  task.catalog.view()
+
+
+Filtriranje zapisa
+==================
+
+Postoje tri načina da se definiše koji zapisi u datasetu noda će biti preuzeti iz
+tabele baze odataka:
+
+1. Poziv *open* metode sa specificiranim *where* parametrom, 
+2. Poziv *set_where* metode, pre poziva *open* metode, 
+3. Korišćenje filtera.
+
+Kreirajmo *value_ge* filter za vrednost polja, sa tipom filtera GE (greater than 
+or equal to). Neka je njegova vrednost 50.
+
+
+.. code-block:: js
+
+    c.filters.value_ge.value = 50
+    c.open(true)
+
+
+Filtriranje je izvršeno kao što sledi:
+
+* Kada je *where* parametar specificiran, on se uvek koristi, čak iako je *set_where* 
+  metoda bila pozvana ili nod ima podešene filtere.
+
+
+  .. code-block:: js
+
+    c.set_where({value__ge: 10})
+    c.open({where: {value__ge: 90}}, true)
+
+
+* Kada je *where* parametar izostavljen parametr prosleđen u *set_where* metodi 
+  se koristi.
+
+
+  .. code-block:: js
+
+    c.set_where({value__ge: 10})
+    c.open(true)
+
+
+* Kada je *where* parametar izostavljen i *set_where* metoda nije pozvana, filteri
+  se koriste.
+
+
+  .. code-block:: js
+
+    c.open(true)
+
+
+Za onemogućavanje filtera postavite njegovu vrednost na null.
+
+
+.. code-block:: js
+
+  c.filters.value_ge.value = null
+  c.open(true)
+
+
+*where* parametar open metode je rečnik, čiji su ključevi imena polja, koje slede
+posle duple podcrte filterski simboli.
+
+
+.. note::
+	| Za EQ (equal) filter filterski simbol *__eq* može biti izostaljen. 
+	| Na primer {id: 100} je ekvivalentno sa {id__eq: 100}.
+	
